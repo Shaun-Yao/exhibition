@@ -74,8 +74,12 @@
 
 
    $(function(){
-
-       //$("#option2").click();
+       $('#submitBtn').click(function() {
+           if($('#form')[0].reportValidity()) {
+               $(".panel-body").modal('show');
+               $('#repairForm').submit();
+           }
+       })
    });
 
 </script>

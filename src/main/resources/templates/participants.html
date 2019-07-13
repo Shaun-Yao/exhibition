@@ -107,6 +107,7 @@
             },
             callback: function (result) {
                 if(result) {
+                    $(".panel-body").modal('show');
                     $.ajax({
                         type: "POST",
                         url: "/participant/delete?id=" + id,

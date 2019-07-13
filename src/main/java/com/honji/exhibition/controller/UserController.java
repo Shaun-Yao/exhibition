@@ -57,11 +57,12 @@ public class UserController {
                 WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
                 WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
                 final String openId = wxMpUser.getOpenId();
+                //System.out.println(openId);
                 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("open_id", openId);
                 user = userService.getOne(queryWrapper);
-                session.setAttribute("openId", openId);
-                //model.addAttribute("openId", openId);
+                //session.setAttribute("openId", openId);
+                model.addAttribute("openId", openId);
                 if(user != null) {
                     model.addAttribute("user", user);
                     session.setAttribute("userId", user.getId());
@@ -101,6 +102,7 @@ public class UserController {
 
     @PostMapping("/apply")
     public String apply(@ModelAttribute User user) {
+        System.out.println("openid===" + user.getOpenId());
         boolean result = userService.saveOrUpdate(user);
         Object userId = session.getAttribute("userId");
         if( userId == null && result ) { //保存成功需要设置session

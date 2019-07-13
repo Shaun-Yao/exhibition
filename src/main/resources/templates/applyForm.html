@@ -17,7 +17,7 @@
     <div class="panel-body">
         <form role="form" id="form" th:action="@{apply} + '?code=test'" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" th:value="${session.userId}"/>
-            <input type="hidden" name="openId" th:value="${session.openId}"/>
+            <input type="hidden" name="openId" th:value="${user == null ? openId : user.openId}"/>
 
             <div class="form-group">
                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
@@ -25,29 +25,32 @@
                       th:value="${user == null ? 'D' : user.shopCode}" />
            </div>
 
-            <div th:if="${user != null}">
-                <a href="/participant/list">编辑人员信息</a>
-                <ul class="list-group" th:each="participant : ${participants}">
-                    <li class="list-group-item" th:text="${participant.name}"></li>
-                </ul>
-
-            </div>
-
             <p></p>
-            <div class="col-md-4 text-center">
+
                <button type="button" th:if="${user == null}"
                        class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
                <button type="button" th:if="${user != null}"
                        class="btn btn-warning btn-block" id="modifyBtn">修改店铺代码</button>
-           </div>
+
+
+            <p></p>
+            <div th:if="${user != null}">
+                <label  class="col-sm-2 control-label">已报名人员</label>
+                <ul class="list-group" th:each="participant : ${participants}">
+                    <li class="list-group-item" th:text="${participant.name}"></li>
+                </ul>
+                <p></p>
+                <button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>
+            </div>
        </form>
    </div>
 
 </div>
     </body>
 <script>
-   function goBack() {
-       window.location.href='/index';
+
+   function edit() {
+       window.location.href='/participant/list';
    }
 
 
@@ -61,20 +64,14 @@
                    data: {
                        "code": $("#shopCode").val()
                    },
+                   async: false,
                    //dataType: "json",
                    success: function(data){
 
                        if (data.length == 0) {
-                           //bootbox.setDefaults("locale", "zh_CN");
+
                            bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
-                           /*bootbox.alert({
-                               message: '找不到对应店铺，请确认店铺代码是否正确！',
-                               buttons: {
-                                   ok: {
-                                       label: '确定'
-                                   }
-                               }
-                           });*/
+                           return;
                        } else {
                            /*bootbox.confirm(data.name + " 确认报名？",
                                function(result){
