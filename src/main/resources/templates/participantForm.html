@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订货会智能会务系统</title>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">添加人员信息</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" id="form" th:action="@{save}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="id" th:value="${participant == null ? '' : participant.id}"/>
+
+
+            <div class="form-group">
+               <label for="name" class="col-sm-2 control-label">姓名</label>
+               <input type="text" class="form-control" name="name" id="name" required="required"
+                      th:value="${participant == null ? '' : participant.name}"/>
+            </div>
+
+            <div class="form-group">
+               <label for="mobile" class="col-sm-2 control-label">手机号码</label>
+               <input type="tel" class="form-control" name="mobile" id="mobile"
+                      pattern="^1[3-9]\d{9}$" required="required"
+                      th:value="${participant == null ? '' : participant.mobile}"/>
+            </div>
+<!--
+
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="sex" id="option1"> 男性
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="sex" id="option2" checked> 女性
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="sex" id="option3"> 儿童
+                </label>
+            </div>
+-->
+
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="sex"  value="FEMALE" checked>女
+                    </label>
+                    <label>
+                        <input type="radio" name="sex"  value="MALE">男
+                    </label>
+
+                    <label>
+                        <input type="radio" name="sex"  value="CHILD">儿童
+                    </label>
+                </div>
+
+            <div class="col-md-4 text-center">
+               <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">保存</button>
+               <button type="button" onclick="goBack()" class="btn btn-info btn-lg">取消</button>
+           </div>
+       </form>
+   </div>
+
+</div>
+    </body>
+<script>
+   function goBack() {
+       window.location.href='/participant/list';
+   }
+
+
+   $(function(){
+
+       //$("#option2").click();
+   });
+
+</script>
+</html>
