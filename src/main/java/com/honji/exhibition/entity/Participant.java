@@ -31,5 +31,6 @@ public class Participant extends BaseEntity {
     //@EnumValue
     private SexEnum sex;
 
+    private boolean attendTraining;
 
 }

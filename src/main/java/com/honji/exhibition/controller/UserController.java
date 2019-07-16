@@ -102,7 +102,7 @@ public class UserController {
 
     @PostMapping("/apply")
     public String apply(@ModelAttribute User user) {
-        System.out.println("openid===" + user.getOpenId());
+        log.info("openId=={}", user.getOpenId());
         boolean result = userService.saveOrUpdate(user);
         Object userId = session.getAttribute("userId");
         if( userId == null && result ) { //保存成功需要设置session

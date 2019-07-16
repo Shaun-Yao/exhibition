@@ -44,19 +44,29 @@
                 </label>
             </div>
 -->
-
+            <div class="form-group">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="sex"  value="FEMALE" checked>女
+                        <input type="radio" name="sex"  value="FEMALE"
+                               th:checked="${participant == null || participant.sex.name() == 'FEMALE'}" >女
                     </label>
                     <label>
-                        <input type="radio" name="sex"  value="MALE">男
+                        <input type="radio" name="sex"  value="MALE"
+                               th:checked="${participant != null && participant.sex.name() eq 'MALE'}">男
                     </label>
 
                     <label>
-                        <input type="radio" name="sex"  value="CHILD">儿童
+                        <input type="radio" name="sex"  value="CHILD"
+                               th:checked="${participant != null && participant.sex.name() eq 'CHILD'}">儿童
                     </label>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="attendTraining" class="col-sm-2 control-label">备注：本人是否参加16-17号培训</label>
+                <input type="checkbox" name="attendTraining" id="attendTraining"
+                th:checked="${participant != null && participant.attendTraining}">
+            </div>
 
             <div class="col-md-4 text-center">
                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">保存</button>

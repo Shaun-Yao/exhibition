@@ -18,7 +18,12 @@
         <h3 class="panel-title" th:text="已报名人员 + ${state.index + 1}"></h3>
     </div>
     <div class="panel-body">
-        <span th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
+        <span  th:if="${participant.attendTraining}"
+               th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
+        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()
+         + '&nbsp&nbsp&nbsp&nbsp 确定参加培训会'}"></span>
+        <span  th:if="${not participant.attendTraining}"
+               th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
         + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()}"></span>
         <p></p>
         <p>

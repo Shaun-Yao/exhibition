@@ -37,13 +37,23 @@
             <div th:if="${user != null}">
                 <label  class="col-sm-2 control-label">已报名人员</label>
                 <ul class="list-group" th:each="participant : ${participants}">
-                    <li class="list-group-item" th:text="${participant.name}"></li>
+                    <li class="list-group-item" th:if="${participant.attendTraining}"
+                        th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp 确定参加培训会'"></li>
+                    <li class="list-group-item" th:if="${not participant.attendTraining}"
+                        th:text="${participant.name}"></li>
                 </ul>
                 <p></p>
                 <button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>
             </div>
        </form>
+
+        <p></p>
+        <div>
+            <h3 class="panel-title" style="color:#FF0000">报名截止时间：7月25日</h3>
+        </div>
    </div>
+
+
 
 </div>
     </body>
