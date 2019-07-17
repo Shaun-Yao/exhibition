@@ -17,12 +17,12 @@
     <div class="panel-body">
         <form role="form" id="form" th:action="@{apply} + '?code=test'" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" th:value="${session.userId}"/>
-            <input type="hidden" name="openId" th:value="${user == null ? openId : user.openId}"/>
+            <input type="hidden" name="openId" th:value="${session.openId}"/>
 
             <div class="form-group">
                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
                <input type="text" class="form-control" name="shopCode" id="shopCode" required="required"
-                      th:value="${user == null ? 'D' : user.shopCode}" />
+                      th:value="${user == null ? 'D' : shopCode}" />
            </div>
 
             <p></p>

@@ -1,7 +1,6 @@
 package com.honji.exhibition.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Shop;
 import com.honji.exhibition.service.IShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,7 @@ public class ShopController {
     @GetMapping("/get")
     public Shop get(@RequestParam String code) {
 
-        QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", code);
-        Shop shop = shopService.getOne(queryWrapper);
-
+        Shop shop = shopService.getByCode(code);
         return shop;
     }
 }

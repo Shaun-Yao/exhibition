@@ -2,8 +2,10 @@ package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
+import com.honji.exhibition.entity.Shop;
 import com.honji.exhibition.entity.User;
 import com.honji.exhibition.service.IParticipantService;
+import com.honji.exhibition.service.IShopService;
 import com.honji.exhibition.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -36,6 +38,9 @@ public class UserController {
     private IParticipantService participantService;
 
     @Autowired
+    private IShopService shopService;
+
+    @Autowired
     private HttpSession session;
 
 
@@ -61,8 +66,8 @@ public class UserController {
                 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("open_id", openId);
                 user = userService.getOne(queryWrapper);
-                //session.setAttribute("openId", openId);
-                model.addAttribute("openId", openId);
+                session.setAttribute("openId", openId);
+                //model.addAttribute("openId", openId);
                 if(user != null) {
                     model.addAttribute("user", user);
                     session.setAttribute("userId", user.getId());
@@ -73,12 +78,14 @@ public class UserController {
         }
 
         if (user != null) {
+            Shop shop = shopService.getById(user.getShopId());
             QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("user_id", user.getId());
             List<Participant> participants = participantService.list(queryWrapper);
+
+            model.addAttribute("shopCode", shop.getCode());
             model.addAttribute("participants", participants);
         }
-
         return "applyForm";
     }
 
@@ -103,6 +110,12 @@ public class UserController {
     @PostMapping("/apply")
     public String apply(@ModelAttribute User user) {
         log.info("openId=={}", user.getOpenId());
+        //不确定是哪种情况会导致openId为空，暂时阻止这种情况报名
+        if (StringUtils.isEmpty(user.getOpenId())) {
+            return "error";
+        }
+        Shop shop = shopService.getByCode(user.getShopCode());
+        user.setShopId(shop.getId());
         boolean result = userService.saveOrUpdate(user);
         Object userId = session.getAttribute("userId");
         if( userId == null && result ) { //保存成功需要设置session

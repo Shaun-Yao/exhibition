@@ -15,9 +15,10 @@ import java.util.List;
 @Accessors(chain = true)
 public class User extends BaseEntity {
     private String openId;
+    private Long shopId;
+
+    @TableField(exist = false)
     private String shopCode;
-    //private String shopName;
-    //private String area;
 
     @TableField(exist = false)
     private List<Participant> participants = new ArrayList<>();
