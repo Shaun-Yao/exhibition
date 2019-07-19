@@ -15,7 +15,7 @@
         <h3 class="panel-title">浪漫春天2020春夏发布会报名</h3>
     </div>
     <div class="panel-body">
-        <form role="form" id="form" th:action="@{apply} + '?code=test'" method="post" enctype="multipart/form-data">
+        <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" th:value="${session.userId}"/>
             <input type="hidden" name="openId" th:value="${session.openId}"/>
 

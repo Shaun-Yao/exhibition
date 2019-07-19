@@ -8,10 +8,7 @@ import com.honji.exhibition.service.IParticipantService;
 import com.honji.exhibition.service.IShopService;
 import com.honji.exhibition.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,26 +53,6 @@ public class UserController {
             model.addAttribute("user", user);
         }
 
-        if( userId == null && StringUtils.isNotBlank(code)) {//code非空则是微信网页登录跳转过来的
-            try {
-
-                WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
-                WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-                final String openId = wxMpUser.getOpenId();
-                //System.out.println(openId);
-                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("open_id", openId);
-                user = userService.getOne(queryWrapper);
-                session.setAttribute("openId", openId);
-                //model.addAttribute("openId", openId);
-                if(user != null) {
-                    model.addAttribute("user", user);
-                    session.setAttribute("userId", user.getId());
-                }
-            } catch (WxErrorException e) {
-                e.printStackTrace();
-            }
-        }
 
         if (user != null) {
             Shop shop = shopService.getById(user.getShopId());
@@ -109,7 +86,7 @@ public class UserController {
 
     @PostMapping("/apply")
     public String apply(@ModelAttribute User user) {
-        log.info("openId=={}", user.getOpenId());
+        //log.info("openId=={}", user.getOpenId());
         //不确定是哪种情况会导致openId为空，暂时阻止这种情况报名
         if (StringUtils.isEmpty(user.getOpenId())) {
             return "error";
