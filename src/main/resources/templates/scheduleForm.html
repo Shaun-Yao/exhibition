@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订货会智能会务系统</title>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">填写行程信息</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                不带 title 的面板标题
+            </div>
+            <div class="panel-body">
+                   <!--<input type="hidden" name="id" th:value="${schedule.id}"/>-->
+
+                    <div class="form-group">
+                        <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
+                        <input type="text" class="form-control" name="shopCode" id="shopCode" required="required" />
+                    </div>
+
+                    <p></p>
+
+                    <button type="button"
+                            class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
+
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    带有 title 的面板标题
+                </h3>
+            </div>
+            <div class="panel-body">
+                面板内容
+            </div>
+        </div>
+
+        </form>
+   </div>
+
+
+
+</div>
+    </body>
+<script>
+
+   function edit() {
+       window.location.href='/participant/list';
+   }
+
+
+   $(function(){
+
+       $('#submitBtn, #modifyBtn').click(function() {
+           if($('#form')[0].reportValidity()) {
+               $.ajax({
+                   type: "GET",
+                   url: "/shop/get",
+                   data: {
+                       "code": $("#shopCode").val()
+                   },
+                   async: false,
+                   //dataType: "json",
+                   success: function(data){
+
+                       if (data.length == 0) {
+
+                           bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
+                           return;
+                       } else {
+                           /*bootbox.confirm(data.name + " 确认报名？",
+                               function(result){
+                               if(result) {
+                                   $(".panel-body").modal('show');
+                                   $('#repairForm').submit();
+                               }
+                           });*/
+
+                           bootbox.confirm({
+                               message: data.code + "  " +  data.name + " 确认报名？",
+                               buttons: {
+                                   confirm: {
+                                       label: '确认',
+                                       className: 'btn-success'
+                                   },
+                                   cancel: {
+                                       label: '取消',
+                                       className: 'btn-danger'
+                                   }
+                               },
+                               callback: function (result) {
+                                   if(result) {
+                                       $(".panel-body").modal('show');
+                                       $('#form').submit();
+                                   }
+                               }
+                           });
+                       }
+                   }
+               });
+           }
+
+/*
+
+           if($('#repairForm')[0].reportValidity()) {
+               //event.preventDefault();
+               bootbox.confirm("确认提交维修申请？", function(result){
+                   if(result) {
+                       $(".panel-body").modal('show');
+                       $('#repairForm').submit();
+                   }
+               });
+           }
+*/
+
+       })
+
+   });
+
+</script>
+</html>
