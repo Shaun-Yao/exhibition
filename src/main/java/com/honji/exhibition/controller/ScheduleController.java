@@ -1,9 +1,12 @@
 package com.honji.exhibition.controller;
 
 
+import com.honji.exhibition.entity.Schedule;
+import com.honji.exhibition.service.IScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -17,9 +20,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
+    @Autowired
+    private IScheduleService scheduleService;
+
+
     @GetMapping("/toAdd")
     public String toAdd() {
         return "scheduleForm";
+    }
+
+    @GetMapping("/toEdit")
+    public String toEdit(@RequestParam Long id, Model model) {
+        Schedule schedule = scheduleService.getById(id);
+        model.addAttribute("schedule", schedule);
+        return "scheduleForm";
+    }
+
+    @PostMapping("/add")
+    public String add(@ModelAttribute Schedule schedule) {
+        System.out.println(schedule.getArrivedTime());
+        scheduleService.saveOrUpdate(schedule);
+        return "index";
     }
 
 }

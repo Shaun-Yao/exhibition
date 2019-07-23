@@ -3,14 +3,13 @@ package com.honji.exhibition.enums;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum StationEnum {
+public enum LeavePickUpLocationEnum {
 
     NONE(0, "无需接送"),
-    AIRPORT(1, "潮汕揭阳机场"),
-    HIGH_SPEED_RAIL_STATION(2, "潮汕高铁站"),
-    TRAIN_STATION(3, "汕头火车站");
+    HOTEL(1, "酒店出发"),
+    COMPANY(2, "公司出发");
 
-    StationEnum(int code, String desc) {
+    LeavePickUpLocationEnum(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }

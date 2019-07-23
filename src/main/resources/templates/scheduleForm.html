@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>订货会智能会务系统</title>
     <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <!--<script src="/webjars/moment/2.24.0/min/moment.min.js"></script>-->
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
+<!--
+
+    <script src="/webjars/eonasdan-bootstrap-datetimepicker/4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+-->
+
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+<!--
+
+    <link rel="stylesheet" href="/webjars/eonasdan-bootstrap-datetimepicker/4.17.47/build/css/bootstrap-datetimepicker.min.css" />
+-->
+
 </head>
 <body>
 <div class="panel panel-primary">
@@ -15,43 +26,106 @@
         <h3 class="panel-title">填写行程信息</h3>
     </div>
     <div class="panel-body">
-        <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
+        <form role="form" id="form" th:action="@{add}" method="post"  >
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                不带 title 的面板标题
-            </div>
-            <div class="panel-body">
-                   <!--<input type="hidden" name="id" th:value="${schedule.id}"/>-->
-
-                    <div class="form-group">
-                        <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
-                        <input type="text" class="form-control" name="shopCode" id="shopCode" required="required" />
-                    </div>
-
-                    <p></p>
-
-                    <button type="button"
-                            class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
-
-
-
-            </div>
-
-
-        </div>
-
-
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    带有 title 的面板标题
+                    往程信息
                 </h3>
             </div>
             <div class="panel-body">
-                面板内容
+                <input type="hidden" name="id" th:value="${schedule == null ? '' : schedule.id}"/>
+                   <input type="hidden" name="id" th:value="${schedule == null ? session.userId : schedule.userId}"/>
+
+                <div class="form-group">
+                    <label for="arrivedTravelMode">出行方式</label>
+                    <select name="arrivedTravelMode" id="arrivedTravelMode" class="form-control">
+                        <option th:each="type : ${T(com.honji.exhibition.enums.TravelModeEnum).values()}"
+                                th:value="${type}" th:text="${type.desc}"
+                                th:selected="${schedule != null && type eq schedule.arrivedTravelMode}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="arrivedNum" class="control-label">航班/班次</label>
+                    <input type="text" class="form-control" name="arrivedNum" id="arrivedNum" th:value="${schedule == null ? '' : schedule.arrivedNum}" />
+                </div>
+
+                <div class="form-group">
+                    <label for="arrivedTime" class="control-label">到达时间</label>
+                    <input type="datetime-local" class="form-control" name="arrivedTime" id="arrivedTime" required="required" th:value="${schedule == null ? '' : schedule.arrivedTime}" />
+                </div>
+
+                <div class="form-group">
+                    <label for="arrivedPickUpStation">接送站点</label>
+                    <select class="form-control" name="arrivedPickUpStation" id="arrivedPickUpStation">
+                        <option th:each="type : ${T(com.honji.exhibition.enums.StationEnum).values()}"
+                                th:value="${type}" th:text="${type.desc}"
+                                th:selected="${schedule != null && type eq schedule.arrivedPickUpStation}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    返程信息
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label for="arrivedTravelMode">出行方式</label>
+                    <select name="leavedTravelMode" id="leavedTravelMode" class="form-control">
+                        <option th:each="type : ${T(com.honji.exhibition.enums.TravelModeEnum).values()}"
+                                th:value="${type}" th:text="${type.desc}"
+                                th:selected="${schedule != null && type eq schedule.leavedTravelMode}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="leavedNum" class="control-label">航班/班次</label>
+                    <input type="text" class="form-control" name="leavedNum" id="leavedNum" th:value="${schedule == null ? '' : schedule.leavedNum}" />
+                </div>
+
+                <div class="form-group">
+                    <label for="leavedTime" class="control-label">返程时间</label>
+                    <input type="datetime-local" class="form-control" name="leavedTime" id="leavedTime" required="required" th:value="${schedule == null ? '' : schedule.leavedTime}" />
+                </div>
+
+                <div class="form-group">
+                    <label for="leavedPickUpLocation">返程接送地</label>
+                    <select class="form-control" name="leavedPickUpLocation" id="leavedPickUpLocation">
+                        <option th:each="type : ${T(com.honji.exhibition.enums.LeavePickUpLocationEnum).values()}"
+                                th:value="${type}" th:text="${type.desc}"
+                                th:selected="${schedule != null && type eq schedule.leavedPickUpLocation}">
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="leavedStation">返程站点</label>
+                    <select class="form-control" name="leavedStation" id="leavedStation">
+                        <option th:each="type : ${T(com.honji.exhibition.enums.LeaveStationEnum).values()}"
+                                th:value="${type}" th:text="${type.desc}"
+                                th:selected="${schedule != null && type eq schedule.leavedStation}">
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
+
+            <button type="submit"
+                    class="btn btn-primary btn-block" >提交</button>
+
 
         </form>
    </div>
@@ -69,7 +143,14 @@
 
    $(function(){
 
+
        $('#submitBtn, #modifyBtn').click(function() {
+           //var s = $("#arrivedTime").val();
+           //$("#arrivedTime").val(s.replace('T',' '));
+           //var startDate = new Date(s.replace(/-/g,'/').replace('T',' '));
+           //console.log(s.replace('T',' '));
+           $('#form').submit();
+/*
            if($('#form')[0].reportValidity()) {
                $.ajax({
                    type: "GET",
@@ -86,13 +167,13 @@
                            bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
                            return;
                        } else {
-                           /*bootbox.confirm(data.name + " 确认报名？",
+                           /!*bootbox.confirm(data.name + " 确认报名？",
                                function(result){
                                if(result) {
                                    $(".panel-body").modal('show');
                                    $('#repairForm').submit();
                                }
-                           });*/
+                           });*!/
 
                            bootbox.confirm({
                                message: data.code + "  " +  data.name + " 确认报名？",
@@ -117,19 +198,7 @@
                    }
                });
            }
-
-/*
-
-           if($('#repairForm')[0].reportValidity()) {
-               //event.preventDefault();
-               bootbox.confirm("确认提交维修申请？", function(result){
-                   if(result) {
-                       $(".panel-body").modal('show');
-                       $('#repairForm').submit();
-                   }
-               });
-           }
-*/
+           */
 
        })
 
