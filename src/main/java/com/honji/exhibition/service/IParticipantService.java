@@ -1,7 +1,9 @@
 package com.honji.exhibition.service;
 
-import com.honji.exhibition.entity.Participant;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.honji.exhibition.entity.Participant;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IParticipantService extends IService<Participant> {
 
+    List<Participant> getByArea(Long userId);
 }

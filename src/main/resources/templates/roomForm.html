@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订货会智能会务系统</title>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">添加同住人</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" id="form" th:action="@{save}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="id" th:value="${room == null ? '' : room.id}"/>
+
+
+            <div class="form-group">
+                <label for="type">房型</label>
+                <select name="type" id="type" class="form-control">
+                    <option th:each="type : ${T(com.honji.exhibition.enums.RoomTypeEnum).values()}"
+                            th:value="${type}" th:text="${type.desc}"
+                            th:selected="${room != null && type eq room.type}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+               <label for="name1" class="col-sm-2 control-label">人员1</label>
+                <select name="name1" id="name1" class="form-control">
+                    <option th:each="participant : ${participants}"
+                            th:value="${participant.id}" th:text="${participant.name}"
+                            >
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name2" class="col-sm-2 control-label">人员2</label>
+                <input type="text" class="form-control" name="name2" id="name2" required="required"
+                       th:value="${room == null ? '' : room.name}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="name1" class="col-sm-2 control-label">人员3(儿童)</label>
+                <input type="text" class="form-control" name="name3" id="name3"
+                       th:value="${room == null ? '' : room.name}"/>
+            </div>
+
+
+            <div class="col-md-4 text-center">
+               <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">保存</button>
+               <button type="button" onclick="goBack()" class="btn btn-info btn-lg">取消</button>
+           </div>
+       </form>
+   </div>
+
+</div>
+    </body>
+<script>
+   function goBack() {
+       window.location.href='/room/list';
+   }
+
+
+   $(function(){
+       $('#submitBtn').click(function() {
+           if($('#form')[0].reportValidity()) {
+               $(".panel-body").modal('show');
+               $('#repairForm').submit();
+           }
+       })
+   });
+
+</script>
+</html>
