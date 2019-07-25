@@ -45,6 +45,20 @@
                 <p></p>
                 <button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>
             </div>
+
+            <p></p>
+            <div th:if="${user != null}">
+                <button type="button" th:if="${schedule == null}"
+                        class="btn btn-primary btn-block" onclick="toAddSchedule()">填写行程信息</button>
+                <button type="button" th:if="${schedule != null}"
+                        class="btn btn-warning btn-block" th:onclick="'javascript:toEditSchedule('+${schedule.id}+')' ">修改行程信息</button>
+            </div>
+
+
+            <p></p>
+            <div th:if="${schedule != null}">
+                <button type="button" class="btn btn-warning btn-block" >编辑房间信息</button>
+            </div>
        </form>
 
         <p></p>
@@ -72,6 +86,15 @@
    function edit() {
        window.location.href='/participant/list';
    }
+
+   function toAddSchedule() {
+       window.location.href='/schedule/toAdd';
+   }
+
+   function toEditSchedule(id) {
+       window.location.href="/schedule/toEdit?id=" + id;
+   }
+
 
 
    $(function(){
@@ -125,18 +148,6 @@
                });
            }
 
-/*
-
-           if($('#repairForm')[0].reportValidity()) {
-               //event.preventDefault();
-               bootbox.confirm("确认提交维修申请？", function(result){
-                   if(result) {
-                       $(".panel-body").modal('show');
-                       $('#repairForm').submit();
-                   }
-               });
-           }
-*/
 
        })
 

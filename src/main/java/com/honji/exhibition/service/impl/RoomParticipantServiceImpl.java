@@ -1,9 +1,9 @@
 package com.honji.exhibition.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.honji.exhibition.entity.RoomParticipant;
 import com.honji.exhibition.mapper.RoomParticipantMapper;
 import com.honji.exhibition.service.IRoomParticipantService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoomParticipantServiceImpl extends ServiceImpl<RoomParticipantMapper, RoomParticipant> implements IRoomParticipantService {
+
 
 }

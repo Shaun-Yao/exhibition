@@ -8,10 +8,9 @@ import com.honji.exhibition.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -32,10 +31,15 @@ public class RoomController {
     @Autowired
     private IParticipantService participantService;
 
+    @Autowired
+    private HttpSession session;
+
     @GetMapping("/toAdd")
     public String toAdd(Model model) {
-        List<Participant> participants = participantService.getByArea(11l);
+        List<Participant> participants = participantService.getByArea(3l);
+        List<Participant> children = participantService.getChildren();
         model.addAttribute("participants", participants);
+        model.addAttribute("children", children);
         return "roomForm";
     }
 
@@ -47,4 +51,12 @@ public class RoomController {
         model.addAttribute("room", room);
         return "roomForm";
     }
+
+    @PostMapping("/save")
+    public String save(@ModelAttribute Room room) {
+
+        roomService.add(room);
+        return "index";
+    }
+
 }

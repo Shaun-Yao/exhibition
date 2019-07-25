@@ -1,6 +1,7 @@
 package com.honji.exhibition.service.impl;
 
 import com.honji.exhibition.entity.Participant;
+import com.honji.exhibition.entity.Room;
 import com.honji.exhibition.mapper.ParticipantMapper;
 import com.honji.exhibition.service.IParticipantService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,4 +28,11 @@ public class ParticipantServiceImpl extends ServiceImpl<ParticipantMapper, Parti
     public List<Participant> getByArea(Long userId) {
         return participantMapper.selectByArea(userId);
     }
+
+    @Override
+    public List<Participant> getChildren() {
+        return participantMapper.selectChildren();
+    }
+
+
 }

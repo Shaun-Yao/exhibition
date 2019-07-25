@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8000
   servlet:
     multipart:
       max-file-size: 3MB
@@ -9,9 +9,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://10.10.10.107:3306/exhibition?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true
-    username: ipos
-    password: hongjipos@2016
+    url: jdbc:mysql://10.10.16.137:3306/exhibition?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true
+    username: root
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
 
 
@@ -37,12 +37,13 @@ mapper:
 
 wx:
   mp:
-    appId: wxcd0e02c4283de35e
-    secret: b43b3add5005cdbb0d857bd9b2aca743
+    appId: wx96f9924f0c3cd767
+    secret: 76245364915271d03c19f9fa638817e8
     token: wff896uy53fr54l12xd954fgkl2qsa56
     aesKey: TrggU0NiO105hc7bK7DGZVF7CACo5vyu4YPb6FCB0A9
 logging:
 
   file: logs/exhibition.log
   level:
+    com.honji.exhibition.mapper: debug
     root: INFO

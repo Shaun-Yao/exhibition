@@ -20,4 +20,7 @@ public interface ParticipantMapper extends BaseMapper<Participant> {
             "WHERE shop_id IN ( SELECT id FROM shop WHERE area IN ( SELECT area FROM shop WHERE id = ( SELECT shop_id FROM `user` WHERE id = #{userId} ) ) ))")
     List<Participant> selectByArea(Long userId);
 
+    @Select("SELECT * FROM participant WHERE sex = 3")
+    List<Participant> selectChildren();
+
 }

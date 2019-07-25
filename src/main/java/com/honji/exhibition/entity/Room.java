@@ -1,9 +1,13 @@
 package com.honji.exhibition.entity;
 
-import com.honji.exhibition.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.honji.exhibition.enums.RoomTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -22,7 +26,8 @@ public class Room extends BaseEntity {
 
     private Long userId;
 
-    private Integer type;
+    private RoomTypeEnum type;
 
-
+    @TableField(exist = false)
+    private List<RoomParticipant> participants = new ArrayList<>();
 }

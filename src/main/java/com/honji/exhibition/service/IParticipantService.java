@@ -16,4 +16,7 @@ import java.util.List;
 public interface IParticipantService extends IService<Participant> {
 
     List<Participant> getByArea(Long userId);
+
+    List<Participant> getChildren();
+
 }

@@ -1,12 +1,8 @@
 package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.honji.exhibition.entity.Participant;
-import com.honji.exhibition.entity.Shop;
-import com.honji.exhibition.entity.User;
-import com.honji.exhibition.service.IParticipantService;
-import com.honji.exhibition.service.IShopService;
-import com.honji.exhibition.service.IUserService;
+import com.honji.exhibition.entity.*;
+import com.honji.exhibition.service.*;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +34,12 @@ public class UserController {
     private IShopService shopService;
 
     @Autowired
+    private IScheduleService scheduleService;
+
+    @Autowired
+    private IRoomService roomService;
+
+    @Autowired
     private HttpSession session;
 
 
@@ -60,8 +62,13 @@ public class UserController {
             queryWrapper.eq("user_id", user.getId());
             List<Participant> participants = participantService.list(queryWrapper);
 
+            QueryWrapper<Schedule> scheduleQueryWrapper = new QueryWrapper<>();
+            scheduleQueryWrapper.eq("user_id", user.getId());
+            Schedule schedule = scheduleService.getOne(scheduleQueryWrapper);
+
             model.addAttribute("shopCode", shop.getCode());
             model.addAttribute("participants", participants);
+            model.addAttribute("schedule", schedule);
         }
         return "applyForm";
     }

@@ -90,11 +90,13 @@ public class MysqlGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("com.honji.exhibition.entity.IdEntity");
+        strategy.setSuperEntityClass("com.honji.exhibition.entity.BaseEntity");
         strategy.setEntityLombokModel(true);
         //strategy.setSuperControllerClass("com.honji.exhibition.BaseController");
         strategy.setInclude(scanner("表名"));
         strategy.setSuperEntityColumns("id");
+        //strategy.setSuperEntityColumns("createdTime");
+        //strategy.setSuperEntityColumns("updatedTime");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);

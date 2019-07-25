@@ -38,9 +38,8 @@ public class ScheduleController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute Schedule schedule) {
-        System.out.println(schedule.getArrivedTime());
         scheduleService.saveOrUpdate(schedule);
-        return "index";
+        return "roomForm";
     }
 
 }
