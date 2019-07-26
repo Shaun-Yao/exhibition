@@ -30,8 +30,13 @@ public class ParticipantServiceImpl extends ServiceImpl<ParticipantMapper, Parti
     }
 
     @Override
-    public List<Participant> getChildren() {
-        return participantMapper.selectChildren();
+    public List<Participant> getChildren(Long userId) {
+        return participantMapper.selectChildren(userId);
+    }
+
+    @Override
+    public List<Participant> listByRoom(Long roomId) {
+        return participantMapper.selectByRoom(roomId);
     }
 
 

@@ -13,32 +13,27 @@
 
 </head>
 <body>
-<div class="panel panel-info" th:each="participant, state : ${participants}">
+<div class="panel panel-info" th:each="room, state : ${rooms}">
     <div class="panel-heading">
-        <h3 class="panel-title" th:text="已报名人员 + ${state.index + 1}"></h3>
+        <h3 class="panel-title" th:text="房间 + ${state.index + 1} + ':' + ${room.type.desc}"></h3>
     </div>
     <div class="panel-body">
-        <span  th:if="${participant.attendTraining}"
-               th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
-        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()
-         + '&nbsp&nbsp&nbsp&nbsp 确定参加培训会'}"></span>
-        <span  th:if="${not participant.attendTraining}"
-               th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
-        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()}"></span>
+        <div th:each="participant, state : ${room.participants}">
+            <span th:text="${participant.name}"></span>
+        </div>
+
         <p></p>
         <p>
-            <button type="button" class="btn btn-primary " th:onclick="'javascript:toEdit('+${participant.id}+')' ">修改</button>
-            <button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${participant.id}+')' ">
+            <button type="button" class="btn btn-primary " th:onclick="'javascript:toEdit('+${room.id}+')' ">修改</button>
+            <button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${room.id}+')' ">
                删除
             </button>
         </p>
     </div>
 </div>
-
-
-
+<p></p>
     <div class="col-md-4 text-center">
-        <button type="button" class="btn btn-primary btn-lg" onclick="toAdd()">添加人员</button>
+        <button type="button" class="btn btn-primary btn-lg" onclick="toAdd()">添加房间</button>
         <button type="button" onclick="goBack()" class="btn btn-info btn-lg">返回</button>
     </div>
 
@@ -51,30 +46,16 @@
     }
 
     function toAdd() {
-        window.location.href='/participant/toAdd';
+        window.location.href='/room/toAdd';
     }
 
     function toEdit(id) {
-        window.location.href="/participant/toEdit?id=" + id;
+        window.location.href="/room/toEdit?id=" + id;
     }
 
 
     function remove(id) {
-/*
 
-        bootbox.confirm("确认删除？", function(result){
-            if(result) {
-                $.ajax({
-                    type: "POST",
-                    url: "/participant/delete?id=" + id,
-                    //async: false,
-                    success: function(data){
-                        window.location.href='/participant/list';
-                    }
-                });
-            }
-        });
-*/
 
         bootbox.confirm({
             message: "确认删除？",
@@ -93,10 +74,10 @@
                     $(".panel-body").modal('show');
                     $.ajax({
                         type: "POST",
-                        url: "/participant/delete?id=" + id,
+                        url: "/room/delete?id=" + id,
                         //async: false,
                         success: function(data){
-                            window.location.href='/participant/list';
+                            window.location.href='/room/list';
                         }
                     });
                 }

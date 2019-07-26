@@ -96,6 +96,7 @@ public class UserController {
         //log.info("openId=={}", user.getOpenId());
         //不确定是哪种情况会导致openId为空，暂时阻止这种情况报名
         if (StringUtils.isEmpty(user.getOpenId())) {
+            log.error("opendId 为空");
             return "error";
         }
         Shop shop = shopService.getByCode(user.getShopCode());

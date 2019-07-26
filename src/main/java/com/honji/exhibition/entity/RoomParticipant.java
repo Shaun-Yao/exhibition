@@ -1,6 +1,6 @@
 package com.honji.exhibition.entity;
 
-import com.honji.exhibition.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -24,5 +24,7 @@ public class RoomParticipant extends BaseEntity {
 
     private Long participantId;
 
+    @TableField(exist = false)
+    private Participant participant;
 
 }

@@ -29,5 +29,5 @@ public class Room extends BaseEntity {
     private RoomTypeEnum type;
 
     @TableField(exist = false)
-    private List<RoomParticipant> participants = new ArrayList<>();
+    private List<Participant> participants = new ArrayList<>();
 }
