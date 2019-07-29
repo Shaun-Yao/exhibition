@@ -11,7 +11,7 @@
 <body>
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">填写房间信息（可选填）</h3>
+        <h3 class="panel-title">填写同住信息（非必填）</h3>
     </div>
     <div class="panel-body">
         <form role="form" id="form" th:action="@{save}" method="post" enctype="multipart/form-data">
@@ -55,7 +55,7 @@
             </div>
 
             <div class="form-group">
-                <label for="name3" class="col-sm-2 control-label">人员3(可选项，超出两个人第三个只能是儿童)</label>
+                <label for="name3" class="col-sm-2 control-label">人员3(只能选儿童)</label>
                 <select name="participants[2].id" id="name3" class="form-control">
                     <option></option>
                     <option th:each="child : ${children}"

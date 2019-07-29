@@ -30,11 +30,16 @@
 
                 <div class="form-group">
                     <label for="arrivedTime" class="control-label">到达时间</label>
-                    <input type="datetime-local" class="form-control" name="arrivedTime" id="arrivedTime" required="required" th:value="${schedule == null ? '2019-08-13T16:00' : schedule.arrivedTime}" />
+                    <input type="datetime-local" class="form-control" name="arrivedTime" id="arrivedTime" required="required"
+                           min="2019-08-13T00:00" max="2019-08-14T23:59"
+                           th:value="${schedule == null ? '2019-08-13T17:00' : schedule.arrivedTime}" />
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="time">
+                    <label for="aa" class="control-label">到达时间</label>
+                    <input type="datetime-local" class="form-control" name="aa" id="aa" required="required"
+                           min="2019-08-16T00:00" max="2019-08-18T00:00"
+                           th:value="${schedule == null ? '2019-08-13T16:00' : schedule.arrivedTime}" />
                 </div>
 
             </div>

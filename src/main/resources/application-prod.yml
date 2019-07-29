@@ -45,4 +45,5 @@ logging:
 
   file: logs/exhibition.log
   level:
+    com.honji.exhibition.mapper: debug
     root: INFO

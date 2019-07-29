@@ -21,16 +21,18 @@
 
             <div class="form-group">
                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
-               <input type="text" class="form-control" name="shopCode" id="shopCode" required="required"
+               <input type="text" class="form-control" name="shopCode" id="shopCode" required="required" readonly
                       th:value="${user == null ? 'D' : shopCode}" />
            </div>
 
             <p></p>
+<!--
 
                <button type="button" th:if="${user == null}"
                        class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
                <button type="button" th:if="${user != null}"
                        class="btn btn-warning btn-block" id="modifyBtn">修改店铺代码</button>
+-->
 
 
             <p></p>
@@ -43,12 +45,12 @@
                         th:text="${participant.name}"></li>
                 </ul>
                 <p></p>
-                <button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>
+                <!--<button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>-->
             </div>
 
             <p></p>
             <div th:if="${user != null}">
-                <label  class="col-sm-2 control-label">行程信息（必填）</label>
+                <label  class="col-sm-2 control-label">行程信息（必填，请准确填报，以便智能接送）</label>
                 <button type="button" th:if="${schedule == null}"
                         class="btn btn-primary btn-block" onclick="toAddSchedule()">填写行程信息</button>
                 <button type="button" th:if="${schedule != null}"
@@ -58,7 +60,7 @@
 
             <p></p>
             <div th:if="${schedule != null}">
-                <label  class="col-sm-2 control-label">同住信息（非必填）</label>
+                <label  class="col-sm-2 control-label">同住信息（非必填，有同住的需求才需填报）</label>
                 <button type="button" class="btn btn-info btn-block" onclick="toEditRoom()"  >编辑同住信息</button>
             </div>
        </form>

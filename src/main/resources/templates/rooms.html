@@ -33,7 +33,7 @@
 </div>
 <p></p>
     <div class="col-md-4 text-center">
-        <button type="button" class="btn btn-primary btn-lg" onclick="toAdd()">添加房间</button>
+        <button type="button" class="btn btn-primary btn-lg" onclick="toAdd()">添加同住信息</button>
         <button type="button" onclick="goBack()" class="btn btn-info btn-lg">返回</button>
     </div>
 
@@ -46,10 +46,12 @@
     }
 
     function toAdd() {
+        $(".panel-body").modal('show');
         window.location.href='/room/toAdd';
     }
 
     function toEdit(id) {
+        $(".panel-body").modal('show');
         window.location.href="/room/toEdit?id=" + id;
     }
 
