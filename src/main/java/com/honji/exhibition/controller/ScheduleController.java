@@ -50,8 +50,7 @@ public class ScheduleController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute Schedule schedule) {
-        System.out.println(schedule.getArrivedTime());
-        System.out.println(schedule.getLeavedTime());
+
         String arrivedNum = schedule.getArrivedNum();
         String leavedNum = schedule.getLeavedNum();
         if (StringUtils.isNotEmpty(arrivedNum)) {

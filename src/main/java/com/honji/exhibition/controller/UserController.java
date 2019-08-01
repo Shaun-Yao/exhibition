@@ -1,7 +1,10 @@
 package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.honji.exhibition.entity.*;
+import com.honji.exhibition.entity.Participant;
+import com.honji.exhibition.entity.Schedule;
+import com.honji.exhibition.entity.Shop;
+import com.honji.exhibition.entity.User;
 import com.honji.exhibition.service.*;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -73,15 +76,30 @@ public class UserController {
         return "applyForm";
     }
 
-/*
+    @GetMapping("/toApplySupplement")
+    public String toApplySupplement(@RequestParam(required = false) String code, Model model) {
+        Object userId = session.getAttribute("userId");
+        User user = null;
+        if( userId != null ) {
+            user = userService.getById((Long) userId);
+            model.addAttribute("user", user);
+        }
 
-    @GetMapping("/toApply")
-    public String toApply() {
-        //this.initSession(code);
-        //session.setAttribute("userId", "sdgfdhgdfhert");
-        return "applyForm";
+        if (user != null) {
+            Shop shop = shopService.getById(user.getShopId());
+            QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", user.getId());
+            List<Participant> participants = participantService.list(queryWrapper);
+
+            QueryWrapper<Schedule> scheduleQueryWrapper = new QueryWrapper<>();
+            scheduleQueryWrapper.eq("user_id", user.getId());
+
+            model.addAttribute("shopCode", shop.getCode());
+            model.addAttribute("participants", participants);
+        }
+        return "applyFormSupplement";
     }
-*/
+
 
     @GetMapping("/toEdit")
     public String toEdit() {
