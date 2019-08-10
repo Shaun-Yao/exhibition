@@ -75,6 +75,7 @@ public class UserController {
         }
         return "applyForm";
     }
+/*
 
     @GetMapping("/toApplySupplement")
     public String toApplySupplement(@RequestParam(required = false) String code, Model model) {
@@ -99,6 +100,7 @@ public class UserController {
         }
         return "applyFormSupplement";
     }
+*/
 
 
     @GetMapping("/toEdit")

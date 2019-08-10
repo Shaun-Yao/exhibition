@@ -28,9 +28,7 @@
         <p></p>
         <p>
             <button type="button" class="btn btn-primary " th:onclick="'javascript:toEdit('+${participant.id}+')' ">修改</button>
-            <button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${participant.id}+')' ">
-               删除
-            </button>
+            <!--<button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${participant.id}+')' ">删除</button>-->
         </p>
     </div>
 </div>
@@ -58,23 +56,9 @@
         window.location.href="/participant/toEdit?id=" + id;
     }
 
-
-    function remove(id) {
 /*
 
-        bootbox.confirm("确认删除？", function(result){
-            if(result) {
-                $.ajax({
-                    type: "POST",
-                    url: "/participant/delete?id=" + id,
-                    //async: false,
-                    success: function(data){
-                        window.location.href='/participant/list';
-                    }
-                });
-            }
-        });
-*/
+    function remove(id) {
 
         bootbox.confirm({
             message: "确认删除？",
@@ -102,8 +86,8 @@
                 }
             }
         });
-
     }
+*/
 
 
 </script>
