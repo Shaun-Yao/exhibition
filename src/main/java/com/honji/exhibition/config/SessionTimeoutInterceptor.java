@@ -49,8 +49,12 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
         }
 
         if (StringUtils.isEmpty(code)) {//session过期需要重新使用微信网页登录授权
-            //System.out.println("需要微信授权。。");
-            final String url = request.getRequestURL().toString();
+            String url = request.getRequestURL().toString();
+            String busId = request.getParameter("busId");
+            if (StringUtils.isNotEmpty(busId)) {
+                url = url.concat("?busId=").concat(busId);
+            }
+            System.out.println(url);
             String authUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             response.sendRedirect(authUrl);
             //return false;

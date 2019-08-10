@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IShopService extends IService<Shop> {
     Shop getByCode(String code);
+    Shop getByUserId(Long userId);
 }

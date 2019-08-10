@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订货会智能会务系统</title>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">签到</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" id="form" th:action="@{add}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="busId" th:value="${bus.id}" >
+
+            <div class="form-group">
+                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
+                <input type="text" class="form-control" name="shopCode" id="shopCode" required="required" readonly
+                th:value="${shop.code}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="shopName" class="col-sm-2 control-label">店铺名称</label>
+                <input type="text" class="form-control" name="shopName" id="shopName" required="required" readonly
+                th:value="${shop.name}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="busNum" class="col-sm-2 control-label">车牌号码</label>
+                <input type="text" class="form-control" name="busNum" id="busNum" required="required" readonly
+                th:value="${bus.busNum}"/>
+            </div>
+
+
+            <button type="submit"
+                    class="btn btn-primary btn-block" id="submitBtn">确认签到上车</button>
+       </form>
+   </div>
+
+</div>
+</body>
+<script>
+   function goBack() {
+       $(".panel-body").modal('show');
+       window.location.href='/room/list';
+   }
+
+
+   $(function(){
+
+   });
+
+</script>
+</html>

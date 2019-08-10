@@ -10,17 +10,18 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author yao
- * @since 2019-03-01
+ * @since 2019-08-10
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Bus extends IdEntity {
+public class CheckIn extends BaseEntity {
 
 
-    private String busNum;
+    private Long userId;
 
-    private Integer loadNum;
+    private Long busId;
+
 
 
 }
