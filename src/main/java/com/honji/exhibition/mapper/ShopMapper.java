@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface ShopMapper extends BaseMapper<Shop> {
 
-    @Select("SELECT * FROM shop WHERE id = (SELECT shop_id FROM USER WHERE id = #{user_id})")
+    @Select("SELECT * FROM shop WHERE id = (SELECT shop_id FROM `user` WHERE id = #{user_id})")
     Shop selectByUserId(Long userId);
 
 }

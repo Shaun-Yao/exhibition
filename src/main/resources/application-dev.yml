@@ -37,10 +37,10 @@ mapper:
 
 wx:
   mp:
-    appId: wx2403fce351d2e3d8
-    secret: f2dca5ef6d95b67e917790952087141d
-    token: wff896uy53fr54l12xd954fgkl2qsa56
-    aesKey: TrggU0NiO105hc7bK7DGZVF7CACo5vyu4YPb6FCB0A9
+    appId:
+    secret:
+    token:
+    aesKey:
 logging:
 
   file: logs/exhibition.log

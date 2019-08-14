@@ -20,7 +20,7 @@ public class CheckIn extends BaseEntity {
 
     private Long userId;
 
-    private Long busId;
+    //private Long busId;
 
 
 

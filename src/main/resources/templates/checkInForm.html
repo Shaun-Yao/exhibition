@@ -15,7 +15,7 @@
     </div>
     <div class="panel-body">
         <form role="form" id="form" th:action="@{add}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="busId" th:value="${bus.id}" >
+            <!--<input type="hidden" name="busId" th:value="${bus.id}" >-->
 
             <div class="form-group">
                 <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
@@ -28,12 +28,14 @@
                 <input type="text" class="form-control" name="shopName" id="shopName" required="required" readonly
                 th:value="${shop.name}"/>
             </div>
+<!--
 
             <div class="form-group">
                 <label for="busNum" class="col-sm-2 control-label">车牌号码</label>
                 <input type="text" class="form-control" name="busNum" id="busNum" required="required" readonly
                 th:value="${bus.busNum}"/>
             </div>
+-->
 
 
             <button type="submit"
