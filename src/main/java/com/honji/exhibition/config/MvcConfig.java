@@ -23,7 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sessionTimeoutInterceptor).excludePathPatterns("/webjars/**");
+        //registry.addInterceptor(sessionTimeoutInterceptor).excludePathPatterns("/webjars/**");
     }
 
 }

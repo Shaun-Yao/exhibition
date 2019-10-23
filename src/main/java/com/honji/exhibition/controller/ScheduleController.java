@@ -1,8 +1,15 @@
 package com.honji.exhibition.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Schedule;
+import com.honji.exhibition.entity.ScheduleTimeConfig;
+import com.honji.exhibition.entity.Shop;
+import com.honji.exhibition.entity.User;
 import com.honji.exhibition.service.IScheduleService;
+import com.honji.exhibition.service.IScheduleTimeConfigService;
+import com.honji.exhibition.service.IShopService;
+import com.honji.exhibition.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,10 +34,28 @@ public class ScheduleController {
     private IScheduleService scheduleService;
 
     @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private IShopService shopService;
+
+    @Autowired
+    private IScheduleTimeConfigService scheduleTimeConfigService;
+
+    @Autowired
     private HttpSession session;
 
     @GetMapping("/toAdd")
-    public String toAdd() {
+    public String toAdd(Model model) {
+        Object userId = session.getAttribute("userId");
+        User user = userService.getById(userId.toString());
+        Shop shop = shopService.getById(user.getShopId());
+
+        QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("shop_type", shop.getType());
+        ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(queryWrapper);
+        model.addAttribute("scheduleTimeConfig", scheduleTimeConfig);
+
         return "scheduleForm";
     }
 

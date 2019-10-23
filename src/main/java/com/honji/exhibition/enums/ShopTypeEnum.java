@@ -1,30 +1,31 @@
 package com.honji.exhibition.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SexEnum {
-    MALE(1, "男"),
-    FEMALE(2, "女"),
-    CHILD(3, "儿童");
+public enum ShopTypeEnum {
 
-    SexEnum (int code, String desc) {
+
+    ZHI_YING("Z", "直营"),
+    DAI_LI("D", "代理加盟"),
+    LIAN_YING("L", "联营");
+
+    ShopTypeEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
     @EnumValue
-    private final int code;
+    private final String code;
     private final String desc;
 
-    public int getCode() {
+
+    public String getCode() {
         return code;
     }
 
-    @JsonValue
+    //@JsonValue
     public String getDesc() {
         return desc;
     }
-
 
 }

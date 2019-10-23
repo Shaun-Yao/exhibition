@@ -1,10 +1,7 @@
 package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.honji.exhibition.entity.Participant;
-import com.honji.exhibition.entity.Schedule;
-import com.honji.exhibition.entity.Shop;
-import com.honji.exhibition.entity.User;
+import com.honji.exhibition.entity.*;
 import com.honji.exhibition.service.*;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -45,12 +42,21 @@ public class UserController {
     @Autowired
     private HttpSession session;
 
-
+    @Autowired
+    private ISignUpSwitchService signUpSwitchService;
 
     @GetMapping("/toApply")
-    public String index(@RequestParam(required = false) String code, Model model) {
+    public String index(@RequestParam(required = false) String code, @RequestParam String prefix, Model model) {
         Object userId = session.getAttribute("userId");
         User user = null;
+        QueryWrapper<SignUpSwitch> susQueryWrapper = new QueryWrapper();
+        susQueryWrapper.eq("shop_type", prefix);
+        SignUpSwitch signUpSwitch = signUpSwitchService.getOne(susQueryWrapper);
+
+        model.addAttribute("prefix", prefix);
+        model.addAttribute("onOff", signUpSwitch.isOnOff());
+
+
         if( userId != null ) {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", userId);
