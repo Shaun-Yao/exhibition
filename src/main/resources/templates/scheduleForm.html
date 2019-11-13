@@ -7,8 +7,11 @@
     <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
+    <script src="/webjars/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+    <script src="/webjars/bootstrap-fileinput/5.0.1/js/locales/zh.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="/webjars/bootstrap-fileinput/5.0.1/css/fileinput.min.css" />
+    <link rel="stylesheet" href="/webjars/weui/1.1.2/dist/style/weui.min.css" />
 
 </head>
 <body>
@@ -17,7 +20,7 @@
         <h3 class="panel-title">填写行程信息</h3>
     </div>
     <div class="panel-body">
-        <form role="form" id="form" th:action="@{add}" method="post" >
+        <form role="form" id="form" th:action="@{add}" method="post" enctype="multipart/form-data" >
 
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -101,7 +104,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="leavedPickUpLocation">返程接送地</label>
+                        <label for="leavedPickUpLocation">返程出发地</label>
                         <select class="form-control" name="leavedPickUpLocation" id="leavedPickUpLocation" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.LeavePickUpLocationEnum).values()}"
@@ -125,6 +128,25 @@
                 </div>
             </div>
 
+            <!--<input id="input-id" type="file" name="file" data-preview-file-type="text" data-msg-placeholder="上传来程班次图片" >
+-->
+
+
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">上传现场照片</p>
+                    <div class="weui-uploader__info" id="uploader_count" data-total="3" data-val="0">0/3</div>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploader_files"></ul>
+                    <div class="weui-uploader__input-box">
+                        <input class="weui-uploader__input" id="uploader_input" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="col-md-4 text-center">
                 <button type="button" class="btn btn-primary btn-lg" id="submitBtn">保存</button>
                 <button type="button" onclick="goBack()" class="btn btn-info btn-lg">取消</button>
@@ -133,7 +155,15 @@
         </form>
     </div>
 
-
+    <!--BEGIN toast-->
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content">最多只能上传2张图片</p>
+        </div>
+    </div>
+    <!--end toast-->
 
 </div>
 </body>
@@ -146,11 +176,25 @@
 
 
     $(function(){
+
+
+/*
+
+        $("#input-id").fileinput({
+            language : 'zh',
+            showUpload: false,
+            dropZoneEnabled: false,
+            maxFileSize: 1000,
+            allowedFileExtensions: ["jpg", "png"]
+        });
+*/
+
+
         $('#submitBtn').click(function() {
-            if($('#form')[0].reportValidity()) {
+            //if($('#form')[0].reportValidity()) {
                 $(".panel-body").modal('show');
                 $('#form').submit();
-            }
+            //}
         });
 
     });

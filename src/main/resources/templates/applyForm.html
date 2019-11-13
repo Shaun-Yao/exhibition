@@ -22,7 +22,7 @@
             <div class="form-group">
                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
                <input type="text" class="form-control" name="shopCode" id="shopCode" required="required"
-                      th:value="${user == null ? prefix : shopCode}" />
+                      th:value="${user == null ? session.prefix : shopCode}" />
            </div>
 
             <p></p>
@@ -50,13 +50,13 @@
 
 
             <p></p>
-            <!--<div th:if="${user != null}">-->
+            <div th:if="${user != null}">
                 <label  class="col-sm-2 control-label">行程信息（必填，请准确填报，以便智能接送）</label>
                 <button type="button" th:if="${schedule == null}"
                         class="btn btn-primary btn-block" onclick="toAddSchedule()">填写行程信息</button>
                 <button type="button" th:if="${schedule != null}"
                         class="btn btn-success btn-block" th:onclick="'javascript:toEditSchedule('+${schedule.id}+')' ">修改行程信息</button>
-            <!--</div>-->
+            </div>
 
 
 

@@ -46,7 +46,7 @@
                 <label for="name2" class="col-sm-2 control-label">人员2</label>
                 <select name="participants[1].id" id="name2" class="form-control" required>
                     <option></option>
-                    <option th:each="participant : ${participants}"
+                    <option th:each="participant : ${participants4Area}"
                             th:value="${participant.id}" th:text="${participant.name}"
                             th:selected="${room != null && participant.id eq room.participants.get(1).id}"
                     >

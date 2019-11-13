@@ -10,11 +10,16 @@ import com.honji.exhibition.service.IScheduleService;
 import com.honji.exhibition.service.IScheduleTimeConfigService;
 import com.honji.exhibition.service.IShopService;
 import com.honji.exhibition.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,9 +31,16 @@ import javax.servlet.http.HttpSession;
  * @author yao
  * @since 2019-07-20
  */
+@Slf4j
 @Controller
 @RequestMapping("/schedule")
 public class ScheduleController {
+
+    @Value("${web.upload-path}")
+    private String uploadPath;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Autowired
     private IScheduleService scheduleService;
@@ -47,8 +59,8 @@ public class ScheduleController {
 
     @GetMapping("/toAdd")
     public String toAdd(Model model) {
-        Object userId = session.getAttribute("userId");
-        User user = userService.getById(userId.toString());
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userService.getById(userId);
         Shop shop = shopService.getById(user.getShopId());
 
         QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
@@ -74,8 +86,9 @@ public class ScheduleController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Schedule schedule) {
+    public String add(@ModelAttribute Schedule schedule, @RequestParam("file") MultipartFile[] files) {
 
+        System.out.println(files.length);
         String arrivedNum = schedule.getArrivedNum();
         String leavedNum = schedule.getLeavedNum();
         if (StringUtils.isNotEmpty(arrivedNum)) {
@@ -84,9 +97,39 @@ public class ScheduleController {
         if (StringUtils.isNotEmpty(leavedNum)) {
             schedule.setLeavedNum(leavedNum.toUpperCase());
         }
+
+        for (MultipartFile file : files) {
+            System.out.println(file.getOriginalFilename());
+        }
+
+        /*if (!file.isEmpty()) {
+            System.out.println(file.getName());
+            try {
+                // Get the file and save it somewhere
+                byte[] bytes = file.getBytes();
+                final String originalFileName = file.getOriginalFilename();
+                final String fileType = originalFileName.substring(originalFileName.lastIndexOf("."));
+                Path path = Paths.get(uploadPath + "22" + fileType );
+                //System.out.println(path.);
+                Files.write(path, bytes);
+                log.info("上传行程图片成功");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
         scheduleService.saveOrUpdate(schedule);
-        return "redirect:/user/toApply";
+        return "redirect:/room/toAdd";
     }
 
+    @RequestMapping("show")
+    public ResponseEntity showPhotos(){
+
+        try {
+            // 由于是读取本机的文件，file是一定要加上的， path是在application配置文件中的路径
+            return ResponseEntity.ok(resourceLoader.getResource("file:" + uploadPath + "22.png"));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

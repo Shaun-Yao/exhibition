@@ -43,9 +43,13 @@ public class RoomController {
     @GetMapping("/toAdd")
     public String toAdd(Model model) {
         Long userId = (Long) session.getAttribute("userId");
-        List<Participant> participants = participantService.getByArea(userId);
+        QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<Participant> participants = participantService.list(queryWrapper);
+        List<Participant> participants4Area = participantService.getByArea(userId);
         List<Participant> children = participantService.getChildren(userId);
         model.addAttribute("participants", participants);
+        model.addAttribute("participants4Area", participants4Area);
         model.addAttribute("children", children);
         return "roomForm";
     }

@@ -46,14 +46,24 @@ public class UserController {
     private ISignUpSwitchService signUpSwitchService;
 
     @GetMapping("/toApply")
-    public String index(@RequestParam(required = false) String code, @RequestParam String prefix, Model model) {
+    public String index(@RequestParam(required = false) String code,
+                        @RequestParam(required = false)  String prefix, Model model) {
+
+        if (prefix == null) {
+            prefix = (String) session.getAttribute("prefix");
+        }
         Object userId = session.getAttribute("userId");
         User user = null;
         QueryWrapper<SignUpSwitch> susQueryWrapper = new QueryWrapper();
         susQueryWrapper.eq("shop_type", prefix);
         SignUpSwitch signUpSwitch = signUpSwitchService.getOne(susQueryWrapper);
 
-        model.addAttribute("prefix", prefix);
+
+        if (session.getAttribute("prefix") == null) {
+            session.setAttribute("prefix", prefix);
+        }
+
+        //model.addAttribute("prefix", prefix);
         model.addAttribute("onOff", signUpSwitch.isOnOff());
 
 

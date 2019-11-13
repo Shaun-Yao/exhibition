@@ -20,15 +20,15 @@
     <div class="panel-body">
         <span  th:if="${participant.attendTraining}"
                th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
-        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()
+        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getDesc()
          + '&nbsp&nbsp&nbsp&nbsp 确定参加培训会'}"></span>
         <span  th:if="${not participant.attendTraining}"
                th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp'
-        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getdesc()}"></span>
+        + ${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getDesc()}"></span>
         <p></p>
         <p>
             <button type="button" class="btn btn-primary " th:onclick="'javascript:toEdit('+${participant.id}+')' ">修改</button>
-            <!--<button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${participant.id}+')' ">删除</button>-->
+            <button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${participant.id}+')' ">删除</button>
         </p>
     </div>
 </div>
