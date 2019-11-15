@@ -16,27 +16,31 @@
     </div>
     <div class="panel-body">
         <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id" th:value="${session.userId}"/>
+            <input type="hidden" name="id" th:value="${session.user == null ? '' : session.user.id}"/>
             <input type="hidden" name="openId" th:value="${session.openId}"/>
 
+            <div class="form-group" th:if="${session.user != null}">
+               <label for="shopCode" class="col-sm-2 control-label">报名号：</label>
+               <span th:text="${session.user.id}" style="color:#FF0000"><strong></strong></span>
+            </div>
             <div class="form-group">
                <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
                <input type="text" class="form-control" name="shopCode" id="shopCode" required="required"
-                      th:value="${user == null ? session.prefix : shopCode}" />
-           </div>
+                      th:value="${session.user == null ? session.prefix : session.user.shopCode}" />
+            </div>
 
             <p></p>
 
 
-               <button type="button" th:if="${user == null}"
+               <button type="button" th:if="${session.user == null}"
                        class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
-               <button type="button" th:if="${user != null}"
+               <button type="button" th:if="${session.user != null}"
                        class="btn btn-warning btn-block" id="modifyBtn">修改店铺代码</button>
 
 
 
             <p></p>
-            <div th:if="${user != null}">
+            <div th:if="${session.user != null}">
                 <label  class="col-sm-2 control-label">已报名人员</label>
                 <ul class="list-group" th:each="participant : ${participants}">
                     <li class="list-group-item" th:if="${participant.attendTraining}"
@@ -50,7 +54,7 @@
 
 
             <p></p>
-            <div th:if="${user != null}">
+            <div th:if="${session.user != null}">
                 <label  class="col-sm-2 control-label">行程信息（必填，请准确填报，以便智能接送）</label>
                 <button type="button" th:if="${schedule == null}"
                         class="btn btn-primary btn-block" onclick="toAddSchedule()">填写行程信息</button>
@@ -120,7 +124,7 @@
            //$('#submitBtn').attr('disabled',true);
        }
 
-       $('#submitBtn, #modifyBtn').click(function() {
+       $('#submitBtn').click(function() {
            if($('#form')[0].reportValidity()) {
                $.ajax({
                    type: "GET",
@@ -137,14 +141,6 @@
                            bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
                            return;
                        } else {
-                           /*bootbox.confirm(data.name + " 确认报名？",
-                               function(result){
-                               if(result) {
-                                   $(".panel-body").modal('show');
-                                   $('#repairForm').submit();
-                               }
-                           });*/
-
                            bootbox.confirm({
                                message: data.code + "  " +  data.name + " 确认报名？",
                                buttons: {
@@ -161,6 +157,63 @@
                                    if(result) {
                                        $(".panel-body").modal('show');
                                        $('#form').submit();
+                                   }
+                               }
+                           });
+                       }
+                   }
+               });
+           }
+       })
+
+       $('#modifyBtn').click(function() {
+           if($('#form')[0].reportValidity()) {
+               $.ajax({
+                   type: "GET",
+                   url: "/shop/get",
+                   data: {
+                       "code": $("#shopCode").val()
+                   },
+                   async: false,
+                   //dataType: "json",
+                   success: function(data){
+
+                       if (data.length == 0) {
+                           bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
+                           return;
+                       } else {
+                           bootbox.confirm({
+                               message: data.code + "  " +  data.name + " 确认修改店铺代码？",
+                               buttons: {
+                                   confirm: {
+                                       label: '确认',
+                                       className: 'btn-success'
+                                   },
+                                   cancel: {
+                                       label: '取消',
+                                       className: 'btn-danger'
+                                   }
+                               },
+                               callback: function (result) {
+                                   if(result) {
+                                       $.ajax({
+                                           type: "POST",
+                                           url: "/user/updateShopCode",
+                                           data: {
+                                               "shopCode": $("#shopCode").val()
+                                           },
+                                           success: function(data){
+                                               if (data) {
+                                                   alert('修改成功！');
+                                               } else {
+                                                   alert('修改失败，请联系客服！');
+                                               }
+                                           },
+                                           error: function(data){
+                                               alert('系统错误，请联系客服！');
+                                           }
+
+                                       });
                                    }
                                }
                            });

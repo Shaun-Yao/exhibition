@@ -16,7 +16,7 @@
     <div class="panel-body">
         <form role="form" id="form" th:action="@{save}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" id="id" th:value="${room == null ? '' : room.id}"/>
-            <input type="hidden" name="userId" th:value="${room == null ? session.userId : room.userId}"/>
+            <input type="hidden" name="userId" th:value="${room == null ? session.user.id : room.userId}"/>
 
 
             <div class="form-group">

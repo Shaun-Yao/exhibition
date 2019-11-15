@@ -2,6 +2,7 @@ package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.*;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.*;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -49,11 +50,13 @@ public class UserController {
     public String index(@RequestParam(required = false) String code,
                         @RequestParam(required = false)  String prefix, Model model) {
 
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
         if (prefix == null) {
-            prefix = (String) session.getAttribute("prefix");
+            prefix = user.getShopType();
         }
-        Object userId = session.getAttribute("userId");
-        User user = null;
+        model.addAttribute("prefix", prefix);
+
+        //User user = null;
         QueryWrapper<SignUpSwitch> susQueryWrapper = new QueryWrapper();
         susQueryWrapper.eq("shop_type", prefix);
         SignUpSwitch signUpSwitch = signUpSwitchService.getOne(susQueryWrapper);
@@ -66,6 +69,7 @@ public class UserController {
         //model.addAttribute("prefix", prefix);
         model.addAttribute("onOff", signUpSwitch.isOnOff());
 
+/*
 
         if( userId != null ) {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -73,10 +77,11 @@ public class UserController {
             user = userService.getOne(queryWrapper);
             model.addAttribute("user", user);
         }
+*/
 
 
         if (user != null) {
-            Shop shop = shopService.getById(user.getShopId());
+            //Shop shop = shopService.getById(user.getShopId());
             QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("user_id", user.getId());
             List<Participant> participants = participantService.list(queryWrapper);
@@ -85,7 +90,7 @@ public class UserController {
             scheduleQueryWrapper.eq("user_id", user.getId());
             Schedule schedule = scheduleService.getOne(scheduleQueryWrapper);
 
-            model.addAttribute("shopCode", shop.getCode());
+            //model.addAttribute("shopCode", shop.getCode());
             model.addAttribute("participants", participants);
             model.addAttribute("schedule", schedule);
         }
@@ -127,6 +132,7 @@ public class UserController {
     }
 
 
+
     @PostMapping("/apply")
     public String apply(@ModelAttribute User user) {
         //log.info("openId=={}", user.getOpenId());
@@ -138,13 +144,37 @@ public class UserController {
         Shop shop = shopService.getByCode(user.getShopCode());
         user.setShopId(shop.getId());
         boolean result = userService.saveOrUpdate(user);
-        Object userId = session.getAttribute("userId");
-        if( userId == null && result ) { //保存成功需要设置session
-            session.setAttribute("userId", user.getId());
+
+        Object userSession = session.getAttribute("user");
+        if( userSession == null && result ) { //保存成功需要设置session
+            UserSessionVO sessionVO = new UserSessionVO(user.getId(), shop.getId(), shop.getCode(), shop.getType());
+            //UserSessionVO sessionVO = new UserSessionVO(user.getId(), shop);
+            session.setAttribute("user", sessionVO);
             return "redirect:/participant/toAdd";//无id 为新增
         }
 
         return "redirect:/user/toApply";
+
+    }
+
+
+    @ResponseBody
+    @PostMapping("/updateShopCode")
+    public boolean updateShopCode(@RequestParam String shopCode) {
+        UserSessionVO userSessionVO = (UserSessionVO) session.getAttribute("user");
+        User user = userService.getById(userSessionVO.getId());
+        Shop shop = shopService.getByCode(shopCode);
+
+        user.setShopId(shop.getId());
+        boolean result = userService.updateById(user);
+        if (result) { //更新代码后需要更新session
+            userSessionVO.setShopId(shop.getId());
+            userSessionVO.setShopCode(shop.getCode());
+            userSessionVO.setShopType(shop.getType());
+            session.setAttribute("user", userSessionVO);
+        }
+
+        return result;
 
     }
 

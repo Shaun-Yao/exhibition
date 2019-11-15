@@ -4,8 +4,7 @@ package com.honji.exhibition.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Schedule;
 import com.honji.exhibition.entity.ScheduleTimeConfig;
-import com.honji.exhibition.entity.Shop;
-import com.honji.exhibition.entity.User;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IScheduleService;
 import com.honji.exhibition.service.IScheduleTimeConfigService;
 import com.honji.exhibition.service.IShopService;
@@ -59,12 +58,9 @@ public class ScheduleController {
 
     @GetMapping("/toAdd")
     public String toAdd(Model model) {
-        Long userId = (Long) session.getAttribute("userId");
-        User user = userService.getById(userId);
-        Shop shop = shopService.getById(user.getShopId());
-
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
         QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("shop_type", shop.getType());
+        queryWrapper.eq("shop_type", user.getShopType());
         ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(queryWrapper);
         model.addAttribute("scheduleTimeConfig", scheduleTimeConfig);
 
@@ -80,6 +76,12 @@ public class ScheduleController {
 
     @GetMapping("/toEdit")
     public String toEdit(@RequestParam Long id, Model model) {
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("shop_type", user.getShopType());
+        ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(queryWrapper);
+        model.addAttribute("scheduleTimeConfig", scheduleTimeConfig);
+
         Schedule schedule = scheduleService.getById(id);
         model.addAttribute("schedule", schedule);
         return "scheduleForm";

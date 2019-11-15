@@ -30,7 +30,7 @@
                 </div>
                 <div class="panel-body">
                     <input type="hidden" name="id" th:value="${schedule == null ? '' : schedule.id}"/>
-                    <input type="hidden" name="userId" th:value="${schedule == null ? session.userId : schedule.userId}"/>
+                    <input type="hidden" name="userId" th:value="${schedule == null ? session.user.id : schedule.userId}"/>
 
                     <div class="form-group">
                         <label for="arrivedTravelMode">出行方式</label>
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label for="arrivedNum" class="control-label">航班/班次</label>
                         <input type="text" class="form-control" name="arrivedNum" id="arrivedNum" minlength="2" maxlength="6"
-                               th:value="${schedule == null ? '' : schedule.arrivedNum}" />
+                               th:value="${schedule == null ? '' : schedule.arrivedNum}" required />
                     </div>
 
                     <div class="form-group">
@@ -81,7 +81,7 @@
 
                     <div class="form-group">
                         <label for="arrivedTravelMode">出行方式</label>
-                        <select name="leavedTravelMode" id="leavedTravelMode" class="form-control"  required>
+                        <select name="leavedTravelMode" id="leavedTravelMode" class="form-control" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.TravelModeEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <label for="leavedNum" class="control-label">航班/班次</label>
                         <input type="text" class="form-control" name="leavedNum" id="leavedNum" minlength="2" maxlength="6"
-                               th:value="${schedule == null ? '' : schedule.leavedNum}" />
+                               th:value="${schedule == null ? '' : schedule.leavedNum}" required/>
                     </div>
 
                     <div class="form-group">
@@ -131,6 +131,7 @@
             <!--<input id="input-id" type="file" name="file" data-preview-file-type="text" data-msg-placeholder="上传来程班次图片" >
 -->
 
+<!--
 
             <div class="weui-uploader">
                 <div class="weui-uploader__hd">
@@ -145,6 +146,7 @@
                 </div>
             </div>
 
+-->
 
 
             <div class="col-md-4 text-center">
@@ -177,6 +179,40 @@
 
     $(function(){
 
+        $('#arrivedTravelMode').change(function () {
+            switch (this.value) {
+                case 'PLANE':
+                    $('#arrivedPickUpStation option[value=AIRPORT]')[0].selected=true;
+                    break;
+                case 'HIGH_SPEED_RAIL':
+                    $('#arrivedPickUpStation option[value=HIGH_SPEED_RAIL_STATION]')[0].selected=true;
+                    break;
+                case 'TRAIN':
+                    $('#arrivedPickUpStation option[value=TRAIN_STATION]')[0].selected=true;
+                    break;
+                default:
+                    $('#arrivedNum').val('无');
+                    $('#arrivedPickUpStation option[value=NONE]')[0].selected=true;
+            }
+        });
+
+        $('#leavedTravelMode').change(function () {
+            switch (this.value) {
+                case 'PLANE':
+                    $('#leavedStation option[value=AIRPORT]')[0].selected=true;
+                    break;
+                case 'HIGH_SPEED_RAIL':
+                    $('#leavedStation option[value=HIGH_SPEED_RAIL_STATION]')[0].selected=true;
+                    break;
+                case 'TRAIN':
+                    $('#leavedStation option[value=TRAIN_STATION]')[0].selected=true;
+                    break;
+                default:
+                    $('#leavedNum').val('无');
+                    $('#leavedPickUpLocation option[value=NONE]')[0].selected=true;
+                    $('#leavedStation option[value=NONE]')[0].selected=true;
+            }
+        });
 
 /*
 
@@ -191,10 +227,12 @@
 
 
         $('#submitBtn').click(function() {
-            //if($('#form')[0].reportValidity()) {
+            if($('#form')[0].reportValidity()) {
+                //var arrivedTravelMode = $('#arrivedTravelMode').val();
+                //if ()
                 $(".panel-body").modal('show');
                 $('#form').submit();
-            //}
+            }
         });
 
     });

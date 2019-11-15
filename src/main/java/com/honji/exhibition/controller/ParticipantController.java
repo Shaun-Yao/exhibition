@@ -3,6 +3,7 @@ package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,10 +33,9 @@ public class ParticipantController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        Long userId = (Long) session.getAttribute("userId");
-
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
         QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("user_id", user.getId());
         List<Participant> participants = participantService.list(queryWrapper);
 
         model.addAttribute("participants", participants);
@@ -56,8 +56,8 @@ public class ParticipantController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute Participant participant) {
-        Long userId = (Long) session.getAttribute("userId");
-        participant.setUserId(userId);
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        participant.setUserId(user.getId());
         participantService.saveOrUpdate(participant);
         return "redirect:/participant/list";
     }

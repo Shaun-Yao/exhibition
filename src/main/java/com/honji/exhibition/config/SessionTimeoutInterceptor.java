@@ -1,7 +1,7 @@
 package com.honji.exhibition.config;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.User;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -40,15 +40,23 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession();
         String code = request.getParameter("code");
-        Object userId = session.getAttribute("userId");
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
         Object wxOpenId = session.getAttribute("openId");
 
-        if (userId != null || wxOpenId != null) {
-            //TODO 校验用户是否存在？
+        //if (user != null || wxOpenId != null) {
+        if (user != null) {
+            User persistUser = userService.getById(user.getId());
+            if (persistUser == null) {//用户不存在可能是被后台删除，需要删除session
+                session.removeAttribute("user");
+                log.info("用户不存在删除session");
+                //response.sendRedirect("/user/toApply");
+                return false;
+            }
             return true;
         }
 
-        if (StringUtils.isEmpty(code)) {//session过期需要重新使用微信网页登录授权
+        //session过期需要重新使用微信网页登录授权
+        if (StringUtils.isEmpty(code)) {
             String url = request.getRequestURL().toString();
             String busId = request.getParameter("busId");
             String prefix = request.getParameter("prefix");
@@ -67,14 +75,15 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
                 WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
                 WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
                 final String openId = wxMpUser.getOpenId();
-                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("open_id", openId);
-                User user = userService.getOne(queryWrapper);
+                //QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+                //queryWrapper.eq("open_id", openId);
+                //User user = userService.getOne(queryWrapper);
                 session.setAttribute("openId", openId);
+                UserSessionVO userSessionVO = userService.getForSession(openId);
                 //model.addAttribute("openId", openId);
-                if(user != null) {
+                if(userSessionVO != null) {
                     //model.addAttribute("user", user);
-                    session.setAttribute("userId", user.getId());
+                    session.setAttribute("user", userSessionVO);
                 }
                 return true;
             } catch (WxErrorException e) {

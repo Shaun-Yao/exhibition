@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
 import com.honji.exhibition.entity.Room;
 import com.honji.exhibition.entity.RoomParticipant;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
 import com.honji.exhibition.service.IRoomParticipantService;
 import com.honji.exhibition.service.IRoomService;
@@ -42,7 +43,8 @@ public class RoomController {
 
     @GetMapping("/toAdd")
     public String toAdd(Model model) {
-        Long userId = (Long) session.getAttribute("userId");
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        Long userId = user.getId();
         QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         List<Participant> participants = participantService.list(queryWrapper);
@@ -56,21 +58,26 @@ public class RoomController {
 
     @GetMapping("/toEdit")
     public String toEdit(@RequestParam Long id, Model model) {
-        Long userId = (Long) session.getAttribute("userId");
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        Long userId = user.getId();
         Room room = roomService.getById(id);
         List<Participant> roomParticipants = participantService.listByRoom(room.getId());
         room.setParticipants(roomParticipants);
 
         List<Participant> participants = participantService.getByArea(userId);
+        List<Participant> participants4Area = participantService.getByArea(userId);
         List<Participant> children = participantService.getChildren(userId);
         //修改的时候要把已经选的两个人员加进列表
         participants.add(roomParticipants.get(0));
         participants.add(roomParticipants.get(1));
+        participants4Area.add(roomParticipants.get(0));
+        participants4Area.add(roomParticipants.get(1));
         if (roomParticipants.size() == 3) {//如果有第三个人员则加进儿童列表
             children.add(roomParticipants.get(2));
         }
 
         model.addAttribute("participants", participants);
+        model.addAttribute("participants4Area", participants4Area);
         model.addAttribute("children", children);
         model.addAttribute("room", room);
         return "roomForm";
@@ -89,10 +96,10 @@ public class RoomController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        Long userId = (Long) session.getAttribute("userId");
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
 
         QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("user_id", user.getId());
         List<Room> rooms = roomService.list(queryWrapper);
         for (Room room : rooms) {
             QueryWrapper<RoomParticipant> qw = new QueryWrapper<>();

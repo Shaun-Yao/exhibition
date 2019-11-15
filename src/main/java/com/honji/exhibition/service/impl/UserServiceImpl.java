@@ -5,6 +5,7 @@ import com.honji.exhibition.entity.Participant;
 import com.honji.exhibition.entity.User;
 import com.honji.exhibition.mapper.ParticipantMapper;
 import com.honji.exhibition.mapper.UserMapper;
+import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             participant.setUserId(user.getId());
             participantMapper.insert(participant);
         }
+    }
+
+    @Override
+    public UserSessionVO getForSession(String openId) {
+        return userMapper.selectForSession(openId);
     }
 }
