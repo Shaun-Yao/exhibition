@@ -54,10 +54,7 @@
         window.location.href="/participant/toEdit?id=" + id;
     }
 
-/*
-
     function remove(id) {
-
         bootbox.confirm({
             message: "确认删除？",
             buttons: {
@@ -71,21 +68,26 @@
                 }
             },
             callback: function (result) {
-                if(result) {
-                    $(".panel-body").modal('show');
+
+                if (result) {
                     $.ajax({
                         type: "POST",
                         url: "/participant/delete?id=" + id,
                         //async: false,
                         success: function(data){
-                            window.location.href='/participant/list';
+                            if (data) {
+                                window.location.href='/participant/list';
+                            } else {
+                                alert("参与人已被选入同住人，请先删除同住人信息！");
+                            }
                         }
                     });
                 }
+
             }
         });
     }
-*/
+
 
 
 </script>

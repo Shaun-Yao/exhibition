@@ -3,8 +3,10 @@ package com.honji.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
+import com.honji.exhibition.entity.RoomParticipant;
 import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
+import com.honji.exhibition.service.IRoomParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,9 @@ public class ParticipantController {
 
     @Autowired
     private IParticipantService participantService;
+
+    @Autowired
+    private IRoomParticipantService roomParticipantService;
 
     @Autowired
     private HttpSession session;
@@ -62,11 +67,16 @@ public class ParticipantController {
         return "redirect:/participant/list";
     }
 
+    @ResponseBody
     @PostMapping("/delete")
-    public String delete(@RequestParam String id, Model model) {
-        //Participant participant = participantService.getById(id);
-        participantService.removeById(id);
-        return "redirect:/participant/list";
+    public boolean delete(@RequestParam Long id) {
+        QueryWrapper<RoomParticipant> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("participant_id", id);
+        RoomParticipant roomParticipant = roomParticipantService.getOne(queryWrapper);
+        if (roomParticipant != null) {//已经被选入同住人不能删除
+            return false;
+        }
+        return participantService.removeById(id);
     }
 
 
