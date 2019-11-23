@@ -175,29 +175,25 @@ public class UserController {
         }
 
         return result;
-
     }
 
 
-    /*private void initSession(String code)  {
-        Object userId = session.getAttribute("userId");
-        if( userId == null && StringUtils.isNotBlank(code)) {//code非空则是微信网页登录跳转过来的
-            try {
-
-                WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
-                WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-                final String openId = wxMpUser.getOpenId();
-                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("open_id", openId);
-                User user = userService.getOne(queryWrapper);
-                session.setAttribute("openId", openId);
-                if(user != null) {
-                    session.setAttribute("userId", user.getId());
-                }
-
-            } catch (WxErrorException e) {
-                e.printStackTrace();
-            }
+    /**
+     * 判断已经报过名
+     * @param shopCode
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/isSignUp")
+    public boolean isSignUp(@RequestParam String shopCode) {
+        Shop shop = shopService.getByCode(shopCode);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("shop_id", shop.getId());
+        List<User> users = userService.list(queryWrapper);
+        if (users.size() > 0) {//已经报名
+            return true;
         }
-    }*/
+
+        return false;
+    }
 }

@@ -136,13 +136,28 @@
                    //dataType: "json",
                    success: function(data){
 
-                       if (data.length == 0) {
-
+                       if (data == 0) {
                            bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
                            return;
                        } else {
+                           var msg = data.code + "  " +  data.name + " 确认报名？";
+                           $.ajax({
+                               type: "GET",
+                               url: "/user/isSignUp",
+                               data: {
+                                   "shopCode": data.code
+                               },
+                               async: false,
+                               //dataType: "json",
+                               success: function(result){
+                                    if (result) { //店铺代码已经有人报过名
+                                        msg = data.code + "  " +  data.name + " 店铺代码已经有人报过名，确认继续报名？";
+                                    }
+                               }
+                           });
+
                            bootbox.confirm({
-                               message: data.code + "  " +  data.name + " 确认报名？",
+                               message: msg,
                                buttons: {
                                    confirm: {
                                        label: '确认',

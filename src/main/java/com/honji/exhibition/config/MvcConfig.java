@@ -26,7 +26,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(sessionTimeoutInterceptor)
                 .excludePathPatterns("/webjars/**")
                 //TODO 微信回调不支持post方法， 但放开apply请求可能不安全
-                .excludePathPatterns("/shop/get", "/user/apply");
+                .excludePathPatterns("/shop/get", "/user/isSignUp", "/user/apply");
     }
 
 }
