@@ -68,5 +68,14 @@ public class Schedule extends BaseEntity {
      */
     private LeaveStationEnum leavedStation;
 
+    /**
+     * 班次图片1
+     */
+    private String picture1;
+
+    /**
+     * 班次图片2
+     */
+    private String picture2;
 
 }

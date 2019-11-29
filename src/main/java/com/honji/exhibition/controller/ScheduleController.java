@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * <p>
@@ -87,10 +91,11 @@ public class ScheduleController {
         return "scheduleForm";
     }
 
+    @ResponseBody
     @PostMapping("/add")
-    public String add(@ModelAttribute Schedule schedule, @RequestParam("file") MultipartFile[] files) {
+    public String add(@ModelAttribute Schedule schedule, @RequestParam("files[]") MultipartFile[] files) {
 
-        System.out.println(files.length);
+        //Long userId = schedule.getUserId();
         String arrivedNum = schedule.getArrivedNum();
         String leavedNum = schedule.getLeavedNum();
         if (StringUtils.isNotEmpty(arrivedNum)) {
@@ -100,25 +105,47 @@ public class ScheduleController {
             schedule.setLeavedNum(leavedNum.toUpperCase());
         }
 
-        for (MultipartFile file : files) {
-            System.out.println(file.getOriginalFilename());
+
+        String[] pictures = new String[2];
+        int fileLength = files.length;
+        if (files != null && fileLength > 0) {
+            for (int i = 0; i < fileLength; i++) {
+                try {
+                    if (fileLength == 1) {//只有一个文件是
+
+                    }
+                    //用户ID加序号拼接成文件名，例 1-1，1-2
+                    String fileName = String.valueOf(schedule.getUserId()).concat("-").concat(String.valueOf(i));
+                    byte[] bytes = files[i].getBytes();
+                    final String originalFileName = files[i].getOriginalFilename();
+                    final String fileType = originalFileName.substring(originalFileName.lastIndexOf("."));
+                    Path path = Paths.get(uploadPath + fileName + fileType );
+                    Files.write(path, bytes);
+                    log.info("{} 上传行程图片成功", fileName);
+                    pictures[i] = fileName;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        /*if (!file.isEmpty()) {
-            System.out.println(file.getName());
-            try {
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                final String originalFileName = file.getOriginalFilename();
-                final String fileType = originalFileName.substring(originalFileName.lastIndexOf("."));
-                Path path = Paths.get(uploadPath + "22" + fileType );
-                //System.out.println(path.);
-                Files.write(path, bytes);
-                log.info("上传行程图片成功");
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (StringUtils.isEmpty(schedule.getPicture1())) {
+            schedule.setPicture1(pictures[0]);
+        }
+
+        if (StringUtils.isEmpty(schedule.getPicture2())) {
+            if (pictures.length > 1) {// 如果有两张图片上传则取第2张
+
             }
-        }*/
+            schedule.setPicture2(pictures[0]);
+        }
+
+        if (StringUtils.isNotEmpty(pictures[0])) {
+            schedule.setPicture1(pictures[0]);
+        }
+        if (StringUtils.isNotEmpty(pictures[1])) {
+            schedule.setPicture2(pictures[1]);
+        }
         scheduleService.saveOrUpdate(schedule);
         return "redirect:/room/toAdd";
     }
