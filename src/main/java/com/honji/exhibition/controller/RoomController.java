@@ -45,9 +45,16 @@ public class RoomController {
     public String toAdd(Model model) {
         UserSessionVO user = (UserSessionVO) session.getAttribute("user");
         Long userId = user.getId();
-        QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId);
-        List<Participant> participants = participantService.list(queryWrapper);
+//        QueryWrapper<Participant> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("user_id", userId);
+//        List<Participant> participants = participantService.list(queryWrapper);
+        List<Participant> participants = participantService.getAvailable(userId);
+        List<Participant> unavailableParticipants = participantService.getUnAvailable(userId);
+        participants.addAll(unavailableParticipants);//加上已经分配的参与人
+        //已经分配房间的参与人名字加上（已分配）标识
+        for (Participant participant : unavailableParticipants) {
+            participant.setName(participant.getName().concat("（已分配）"));
+        }
         List<Participant> participants4Area = participantService.getByArea(userId);
         List<Participant> children = participantService.getChildren(userId);
         model.addAttribute("participants", participants);

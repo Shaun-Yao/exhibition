@@ -91,7 +91,7 @@ public class ScheduleController {
         return "scheduleForm";
     }
 
-    @ResponseBody
+    //@ResponseBody
     @PostMapping("/add")
     public String add(@ModelAttribute Schedule schedule, @RequestParam("files[]") MultipartFile[] files) {
 

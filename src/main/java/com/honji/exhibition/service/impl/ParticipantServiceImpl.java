@@ -25,6 +25,16 @@ public class ParticipantServiceImpl extends ServiceImpl<ParticipantMapper, Parti
     private ParticipantMapper participantMapper;
 
     @Override
+    public List<Participant> getAvailable(Long userId) {
+        return participantMapper.selectAvailable(userId);
+    }
+
+    @Override
+    public List<Participant> getUnAvailable(Long userId) {
+        return participantMapper.selectUnAvailable(userId);
+    }
+
+    @Override
     public List<Participant> getByArea(Long userId) {
         return participantMapper.selectByArea(userId);
     }

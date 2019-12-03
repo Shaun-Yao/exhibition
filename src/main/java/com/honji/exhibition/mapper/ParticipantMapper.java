@@ -16,7 +16,26 @@ import java.util.List;
  */
 public interface ParticipantMapper extends BaseMapper<Participant> {
 
-    @Select("SELECT *  FROM participant WHERE user_id IN (SELECT id FROM `user` " +
+
+    /**
+     * 查找该用户下面还未分配房间的参与人
+     * @param userId
+     * @return
+     */
+    @Select("SELECT * FROM participant WHERE user_id = #{userId}" +
+                " and id not in (SELECT participant_id FROM room_participant)")
+    List<Participant> selectAvailable(Long userId);
+
+    /**
+     * 查找该用户下面已经分配房间的参与人
+     * @param userId
+     * @return
+     */
+    @Select("SELECT * FROM participant WHERE user_id = #{userId}" +
+                " and id in (SELECT participant_id FROM room_participant)")
+    List<Participant> selectUnAvailable(Long userId);
+
+    @Select("SELECT * FROM participant WHERE user_id IN (SELECT id FROM `user` " +
             " WHERE shop_id IN ( SELECT id FROM shop WHERE area IN ( SELECT area FROM shop WHERE id = ( SELECT shop_id FROM `user` WHERE id = #{userId} ) ) ))" +
             " AND id not in (SELECT participant_id FROM room_participant)")
     List<Participant> selectByArea(Long userId);

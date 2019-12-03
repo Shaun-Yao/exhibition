@@ -4,9 +4,11 @@ package com.honji.exhibition.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
 import com.honji.exhibition.entity.RoomParticipant;
+import com.honji.exhibition.entity.Schedule;
 import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
 import com.honji.exhibition.service.IRoomParticipantService;
+import com.honji.exhibition.service.IScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,9 @@ public class ParticipantController {
     private IParticipantService participantService;
 
     @Autowired
+    private IScheduleService scheduleService;
+
+    @Autowired
     private IRoomParticipantService roomParticipantService;
 
     @Autowired
@@ -43,6 +48,10 @@ public class ParticipantController {
         queryWrapper.eq("user_id", user.getId());
         List<Participant> participants = participantService.list(queryWrapper);
 
+        QueryWrapper<Schedule> scheduleQueryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", user.getId());
+        Schedule schedule = scheduleService.getOne(scheduleQueryWrapper);
+        model.addAttribute("schedule", schedule);
         model.addAttribute("participants", participants);
         return "participants";
     }

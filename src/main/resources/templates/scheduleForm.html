@@ -130,7 +130,7 @@
 
             <!--<input id="input-id" type="file" name="file" data-preview-file-type="text" data-msg-placeholder="上传来程班次图片" >
 -->
-
+<!--
             <div class="page__bd">
                 <div class="weui-gallery" id="gallery">
                     <span class="weui-gallery__img" id="galleryImg"></span>
@@ -162,8 +162,9 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="picture1" th:value="${schedule == null ? '' : schedule.picture1}">
-            <input type="hidden" name="picture2" th:value="${schedule == null ? '' : schedule.picture2}">
+            -->
+            <input type="hidden" name="picture1" id="picture1" th:value="${schedule == null ? '' : schedule.picture1}">
+            <input type="hidden" name="picture2" id="picture2" th:value="${schedule == null ? '' : schedule.picture2}">
 
             <div class="col-md-4 text-center">
                 <button type="button" class="btn btn-primary btn-lg" id="submitBtn">保存</button>
@@ -175,37 +176,37 @@
 
 </div>
 </body>
-<script >
+<script th:inline="javascript">
 
     var fileArr=new Array();
     var pictureSize = 0;
 
-    function goBack() {
-        $(".panel-body").modal('show');
-        window.location.href='/user/toApply';
-    }
-
-
-
     $(function(){
 
+        if ([[${schedule}]] == null) {//新增行程默认返程出发地为“公司”
+            $('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
+        }
         var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
             $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
             $uploaderInput = $("#uploaderInput"),
             $uploaderFiles = $("#uploaderFiles");
 
-        if ("[[${schedule.picture1}]]".length > 1) {
+        var picture1 = $('#picture1').val();
+        var picture2 = $('#picture2').val();
+        if (picture1.length > 1) {
 
             //return new File([u8arr], "asd", {type:mime});
             $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show")));
             pictureSize = pictureSize + 1;
         }
 
-        if ("[[${schedule.picture2}]]".length > 1) {
+        if (picture2.length > 1) {
             $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show")));
             pictureSize = pictureSize + 1;
             $(".weui-uploader__input-box").hide();
         }
+
+
 
         $uploaderInput.on("change", function(e){
             //console.log(33333);
@@ -259,16 +260,28 @@
             checkPhotoSize();
         });
 
+        $('#leavedTime').change(function () {
+
+            if (this.value > [[${scheduleTimeConfig.arriveStartTime}]]) {
+                $('#leavedPickUpLocation option[value=HOTEL]')[0].selected=true;
+            } else {
+                $('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
+            }
+        });
+
         $('#arrivedTravelMode').change(function () {
             switch (this.value) {
                 case 'PLANE':
                     $('#arrivedPickUpStation option[value=AIRPORT]')[0].selected=true;
+                    $('#arrivedNum').val('');
                     break;
                 case 'HIGH_SPEED_RAIL':
                     $('#arrivedPickUpStation option[value=HIGH_SPEED_RAIL_STATION]')[0].selected=true;
+                    $('#arrivedNum').val('');
                     break;
                 case 'TRAIN':
                     $('#arrivedPickUpStation option[value=TRAIN_STATION]')[0].selected=true;
+                    $('#arrivedNum').val('');
                     break;
                 default:
                     $('#arrivedNum').val('无');
@@ -279,12 +292,15 @@
         $('#leavedTravelMode').change(function () {
             switch (this.value) {
                 case 'PLANE':
+                    $('#leavedNum').val('');
                     $('#leavedStation option[value=AIRPORT]')[0].selected=true;
                     break;
                 case 'HIGH_SPEED_RAIL':
+                    $('#leavedNum').val('');
                     $('#leavedStation option[value=HIGH_SPEED_RAIL_STATION]')[0].selected=true;
                     break;
                 case 'TRAIN':
+                    $('#leavedNum').val('');
                     $('#leavedStation option[value=TRAIN_STATION]')[0].selected=true;
                     break;
                 default:
@@ -309,14 +325,13 @@
         $('#submitBtn').click(function() {
             if($('#form')[0].reportValidity()) {
                 //var arrivedTravelMode = $('#arrivedTravelMode').val();
-                var formData = new FormData($("#form")[0]);
+               /* var formData = new FormData($("#form")[0]);
                 if(fileArr.length!=0){
                     //var formData = new FormData();
                     for(var i = 0;i<fileArr.length;i++){
                         //console.log(fileArr[i]);
                         formData.append("files[]",fileArr[i]);
                     }
-                    //console.log(formData);
                     $.ajax({
                         url: "/schedule/add",
                         type: "POST",
@@ -328,13 +343,19 @@
                         success: function(data){
                         }
                     });
-                }
-                //$(".panel-body").modal('show');
-                //$('#form').submit();
+                }*/
+                $(".panel-body").modal('show');
+                $('#form').submit();
             }
         });
 
     });
+
+    function goBack() {
+        $(".panel-body").modal('show');
+        window.location.href='/user/toApply';
+    }
+
 
 </script>
 </html>

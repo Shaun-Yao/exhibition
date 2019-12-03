@@ -84,6 +84,7 @@
 
 
    $(function(){
+       $("#name1 option:contains('已分配')").attr("disabled", "disabled");
        $('#submitBtn').click(function() {
 
            if($('#form')[0].reportValidity()) {
