@@ -130,7 +130,7 @@
 
             <!--<input id="input-id" type="file" name="file" data-preview-file-type="text" data-msg-placeholder="上传来程班次图片" >
 -->
-<!--
+
             <div class="page__bd">
                 <div class="weui-gallery" id="gallery">
                     <span class="weui-gallery__img" id="galleryImg"></span>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
             </div>
-            -->
+
             <input type="hidden" name="picture1" id="picture1" th:value="${schedule == null ? '' : schedule.picture1}">
             <input type="hidden" name="picture2" id="picture2" th:value="${schedule == null ? '' : schedule.picture2}">
 
@@ -186,7 +186,7 @@
         if ([[${schedule}]] == null) {//新增行程默认返程出发地为“公司”
             $('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
         }
-        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+        var tmpl = '<li class="weui-uploader__file" file-name="" style="background-image:url(#url#)"></li>',
             $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
             $uploaderInput = $("#uploaderInput"),
             $uploaderFiles = $("#uploaderFiles");
@@ -194,19 +194,16 @@
         var picture1 = $('#picture1').val();
         var picture2 = $('#picture2').val();
         if (picture1.length > 1) {
-
             //return new File([u8arr], "asd", {type:mime});
-            $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show")));
+            $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show?fileName=" + picture1)).attr('file-name', picture1));
             pictureSize = pictureSize + 1;
         }
 
         if (picture2.length > 1) {
-            $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show")));
+            $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show?fileName=" + picture2)).attr('file-name', picture2));
             pictureSize = pictureSize + 1;
             $(".weui-uploader__input-box").hide();
         }
-
-
 
         $uploaderInput.on("change", function(e){
             //console.log(33333);
@@ -217,14 +214,30 @@
                 if(length + i + 1 > 2) {
                     break;
                 }
+                var formData = new FormData();
+                formData.append("file", file);
+                $.ajax({
+                    url: "/schedule/upload",
+                    type: "POST",
+                    async: false,
+                    cache: false,
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    data: formData,
+                    success: function(result){
+                        //console.log(result);
+                        //$(tmpl.replace('#fileName#', result));
+                        $uploaderFiles.append($(tmpl.replace('#url#', "/schedule/show?fileName=" + result)).attr('file-name', result));
+                    }
+                });
                 pictureSize = pictureSize + 1;
                 fileArr.push(file);
-                if (url) {
-                    src = url.createObjectURL(file);
-                } else {
-                    src = e.target.result;
-                }
-                $uploaderFiles.append($(tmpl.replace('#url#', src)));
+                // if (url) {
+                //     src = url.createObjectURL(file);
+                // } else {
+                //     src = e.target.result;
+                // }
+                // $uploaderFiles.append($(tmpl.replace('#url#', src)));
             }
             checkPhotoSize();
         });
@@ -253,7 +266,7 @@
 
         //删除图片
         $(".weui-gallery__del").click(function() {
-            console.log(index);
+            //console.log(index);
             $uploaderFiles.find("li").eq(index).remove();
             fileArr.splice(index,1);
             pictureSize = pictureSize - 1;
@@ -323,6 +336,33 @@
 
 
         $('#submitBtn').click(function() {
+            var pictures = $uploaderFiles.find("li");
+            if (pictures.length == 0) { //删除了所有图片需要清空值
+                $('#picture1').val('');
+                $('#picture2').val('');
+                if (($('#arrivedTravelMode').val() != 'SELF_DRIVING' && $('#arrivedTravelMode').val() != 'BUS')
+                || $('#leavedTravelMode').val() != 'SELF_DRIVING' && $('#leavedTravelMode').val() != 'BUS') {
+                    alert("请上传行程图片！");
+                    return;
+                }
+            }
+            //console.log(23423);
+            if (pictures.length == 1) { //只有一张图片，清空第二张
+                $('#picture2').val('');
+            }
+            pictures.each(function (i) {
+                //console.log($(this).attr('file-name'));
+                // var fileName = $(this).attr('file-name');
+                // if (fileName) {
+                //
+                // }
+                if (i == 0) {
+                    $('#picture1').val($(this).attr('file-name'));
+                }
+                if (i == 1) {
+                    $('#picture2').val($(this).attr('file-name'));
+                }
+            });
             if($('#form')[0].reportValidity()) {
                 //var arrivedTravelMode = $('#arrivedTravelMode').val();
                /* var formData = new FormData($("#form")[0]);

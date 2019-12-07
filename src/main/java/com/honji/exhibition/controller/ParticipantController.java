@@ -49,7 +49,7 @@ public class ParticipantController {
         List<Participant> participants = participantService.list(queryWrapper);
 
         QueryWrapper<Schedule> scheduleQueryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", user.getId());
+        scheduleQueryWrapper.eq("user_id", user.getId());
         Schedule schedule = scheduleService.getOne(scheduleQueryWrapper);
         model.addAttribute("schedule", schedule);
         model.addAttribute("participants", participants);
