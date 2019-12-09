@@ -129,6 +129,7 @@ public class ScheduleController {
                 log.info("{} 上传行程图片成功", fileName);
 
             } catch (IOException e) {
+                log.info("上传行程图片失败");
                 e.printStackTrace();
             }
         }

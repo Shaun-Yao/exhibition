@@ -10,7 +10,6 @@
     <script src="/webjars/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
     <script src="/webjars/bootstrap-fileinput/5.0.1/js/locales/zh.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/webjars/bootstrap-fileinput/5.0.1/css/fileinput.min.css" />
     <link rel="stylesheet" href="/webjars/weui/1.1.2/dist/style/weui.min.css" />
 
 </head>
@@ -147,14 +146,14 @@
                             <div class="weui-uploader">
                                 <div class="weui-uploader__hd">
                                     <p class="weui-uploader__title">图片上传</p>
-                                    <div class="weui-uploader__info">0/2</div>
+                                    <div class="weui-uploader__info"></div>
                                 </div>
                                 <div class="weui-uploader__bd">
                                     <ul class="weui-uploader__files" id="uploaderFiles">
 
                                     </ul>
                                     <div class="weui-uploader__input-box">
-                                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple/>
+                                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" />
                                     </div>
                                 </div>
                             </div>
@@ -323,67 +322,35 @@
             }
         });
 
-/*
-
-        $("#input-id").fileinput({
-            language : 'zh',
-            showUpload: false,
-            dropZoneEnabled: false,
-            maxFileSize: 1000,
-            allowedFileExtensions: ["jpg", "png"]
-        });
-*/
-
 
         $('#submitBtn').click(function() {
-            var pictures = $uploaderFiles.find("li");
-            if (pictures.length == 0) { //删除了所有图片需要清空值
-                $('#picture1').val('');
-                $('#picture2').val('');
-                if (($('#arrivedTravelMode').val() != 'SELF_DRIVING' && $('#arrivedTravelMode').val() != 'BUS')
-                || $('#leavedTravelMode').val() != 'SELF_DRIVING' && $('#leavedTravelMode').val() != 'BUS') {
-                    alert("请上传行程图片！");
-                    return;
-                }
-            }
-            //console.log(23423);
-            if (pictures.length == 1) { //只有一张图片，清空第二张
-                $('#picture2').val('');
-            }
-            pictures.each(function (i) {
-                //console.log($(this).attr('file-name'));
-                // var fileName = $(this).attr('file-name');
-                // if (fileName) {
-                //
-                // }
-                if (i == 0) {
-                    $('#picture1').val($(this).attr('file-name'));
-                }
-                if (i == 1) {
-                    $('#picture2').val($(this).attr('file-name'));
-                }
-            });
+
             if($('#form')[0].reportValidity()) {
-                //var arrivedTravelMode = $('#arrivedTravelMode').val();
-               /* var formData = new FormData($("#form")[0]);
-                if(fileArr.length!=0){
-                    //var formData = new FormData();
-                    for(var i = 0;i<fileArr.length;i++){
-                        //console.log(fileArr[i]);
-                        formData.append("files[]",fileArr[i]);
+
+                var pictures = $uploaderFiles.find("li");
+                if (pictures.length == 0) { //删除了所有图片需要清空值
+                    $('#picture1').val('');
+                    $('#picture2').val('');
+                    if (($('#arrivedTravelMode').val() != 'SELF_DRIVING' && $('#arrivedTravelMode').val() != 'BUS')
+                        || $('#leavedTravelMode').val() != 'SELF_DRIVING' && $('#leavedTravelMode').val() != 'BUS') {
+                        alert("请上传行程图片！");
+                        return;
                     }
-                    $.ajax({
-                        url: "/schedule/add",
-                        type: "POST",
-                        async: false,
-                        cache: false,
-                        processData: false,// 告诉jQuery不要去处理发送的数据
-                        contentType: false,// 告诉jQuery不要去设置Content-Type请求头
-                        data: formData,
-                        success: function(data){
-                        }
-                    });
-                }*/
+                }
+                //console.log(23423);
+                if (pictures.length == 1) { //只有一张图片，清空第二张
+                    $('#picture2').val('');
+                }
+                pictures.each(function (i) {
+
+                    if (i == 0) {
+                        $('#picture1').val($(this).attr('file-name'));
+                    }
+                    if (i == 1) {
+                        $('#picture2').val($(this).attr('file-name'));
+                    }
+                });
+
                 $(".panel-body").modal('show');
                 $('#form').submit();
             }
