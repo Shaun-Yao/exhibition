@@ -8,70 +8,65 @@
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/weui/weui.min.css" />
 </head>
 <body>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">浪漫春天2020春夏发布会报名</h3>
+
+
+<div class="page">
+
+    <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${session.user == null ? '' : session.user.id}"/>
+        <input type="hidden" name="openId" th:value="${session.openId}"/>
+
+    <div class="weui-cell" th:if="${session.user != null}">
+        <div class="weui-cell__hd"><label class="weui-label">报名号</label></div>
+        <div class="weui-cell__bd">
+            <span th:text="${session.user.id}" style="color:#FF0000"><strong></strong></span>
+        </div>
     </div>
-    <div class="panel-body">
-        <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id" th:value="${session.user == null ? '' : session.user.id}"/>
-            <input type="hidden" name="openId" th:value="${session.openId}"/>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">店铺代码</label></div>
+        <div class="weui-cell__bd">
+            <input  class="weui-input" placeholder="输入店铺代码"
+                    name="shopCode" id="shopCode" required="required"
+                    th:value="${session.user == null ? session.prefix : session.user.shopCode}"/>
+        </div>
+    </div>
 
-            <div class="form-group" th:if="${session.user != null}">
-               <label for="shopCode" class="col-sm-2 control-label">报名号：</label>
-               <span th:text="${session.user.id}" style="color:#FF0000"><strong></strong></span>
+    <div class="weui-cell" th:if="${session.user == null}">
+        <a class="weui-btn weui-btn_primary" href="javascript:"
+           id="submitBtn">提交报名</a>
+    </div>
+    </form>
+    <div th:if="${session.user != null}">
+        <div class="weui-cells__title">已报名人员</div>
+        <div class="weui-cells" th:each="participant : ${participants}">
+            <div class="weui-cell weui-cell_example">
+                <div class="weui-cell__hd"></div>
+                <div class="weui-cell__bd">
+                    <p th:text="${participant.name}"></p>
+                </div>
+                <div class="weui-cell__ft" th:if="${participant.attendTraining}">确定参加培训会</div>
             </div>
-            <div class="form-group">
-               <label for="shopCode" class="col-sm-2 control-label">店铺代码</label>
-               <input type="text" class="form-control" name="shopCode" id="shopCode" required="required"
-                      th:value="${session.user == null ? session.prefix : session.user.shopCode}" />
-            </div>
+        </div>
+        <a class="weui-btn weui-btn_primary" href="javascript:" onclick="edit()" >编辑人员信息</a>
+    </div>
 
-            <p></p>
+    <div th:if="${session.user != null}">
+        <div class="weui-cells__title">行程信息（必填，请准确填报，以便智能接送）</div>
+        <a class="weui-btn weui-btn_primary" href="javascript:" th:if="${schedule == null}" onclick="toAddSchedule()">填写行程信息</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" th:if="${schedule != null}"
+           th:onclick="'javascript:toEditSchedule('+${schedule.id}+')' ">填写行程信息</a>
+    </div>
 
+    <div th:if="${schedule != null}">
 
-               <button type="button" th:if="${session.user == null}"
-                       class="btn btn-primary btn-block" id="submitBtn">提交报名</button>
-              <!-- <button type="button" th:if="${session.user != null}"
-                       class="btn btn-warning btn-block" id="modifyBtn">修改店铺代码</button>
--->
+        <div class="weui-cells__title">同住信息（非必填，有同住的需求才需填报）</div>
+        <a class="weui-btn weui-btn_primary" href="javascript:"  onclick="toEditRoom()">编辑同住信息</a>
+    </div>
 
-
-            <p></p>
-            <div th:if="${session.user != null}">
-                <label  class="col-sm-2 control-label">已报名人员</label>
-                <ul class="list-group" th:each="participant : ${participants}">
-                    <li class="list-group-item" th:if="${participant.attendTraining}"
-                        th:text="${participant.name} + '&nbsp&nbsp&nbsp&nbsp 确定参加培训会'"></li>
-                    <li class="list-group-item" th:if="${not participant.attendTraining}"
-                        th:text="${participant.name}"></li>
-                </ul>
-                <p></p>
-                <button type="button" class="btn btn-warning btn-block" onclick="edit()" >编辑人员信息</button>
-            </div>
-
-
-            <p></p>
-            <div th:if="${session.user != null}">
-                <label  class="col-sm-2 control-label">行程信息（必填，请准确填报，以便智能接送）</label>
-                <button type="button" th:if="${schedule == null}"
-                        class="btn btn-primary btn-block" onclick="toAddSchedule()">填写行程信息</button>
-                <button type="button" th:if="${schedule != null}"
-                        class="btn btn-success btn-block" th:onclick="'javascript:toEditSchedule('+${schedule.id}+')' ">修改行程信息</button>
-            </div>
-
-
-
-            <p></p>
-            <div th:if="${schedule != null}">
-                <label  class="col-sm-2 control-label">同住信息（非必填，有同住的需求才需填报）</label>
-                <button type="button" class="btn btn-info btn-block" onclick="toEditRoom()"  >编辑同住信息</button>
-            </div>
-       </form>
-
-        <p></p>
+    <p></p>
         <div>
             <h3 class="panel-title" style="color:#FF0000">报行程截止时间：7月31日</h3>
         </div>
@@ -85,12 +80,24 @@
                 2.报名如出现异常情况，麻烦联系区域商品运营专员，谢谢！
             </p>
         </div>
-   </div>
-
 
 
 </div>
-    </body>
+<div id="dialogs">
+<!--BEGIN dialog1-->
+<div class="js_dialog" id="iosDialog1" style="display: none;">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" id="save">确认报名</a>
+        </div>
+    </div>
+</div>
+</div>
+<!--END dialog1-->
+</body>
 <script th:inline="javascript">
 
    function edit() {
@@ -117,6 +124,10 @@
 
    $(function(){
 
+       $('#dialogs').on('click', '.weui-dialog__btn_default', function(){
+           $(this).parents('.js_dialog').fadeOut(200);
+       });
+
        if(![[${onOff}]]) {//如果后台设置关闭报名则禁用所有按钮
            $(":button").each(function () {
                $(this).attr('disabled',true);
@@ -137,7 +148,7 @@
                    success: function(data){
 
                        if (data == 0) {
-                           bootbox.alert('找不到对应店铺，请确认店铺代码是否正确！');
+                           alert('找不到对应店铺，请确认店铺代码是否正确！');
                            return;
                        } else {
                            var msg = data.code + "  " +  data.name + " 确认报名？";
@@ -156,7 +167,14 @@
                                }
                            });
 
-                           bootbox.confirm({
+                           $('.weui-dialog__bd').text(msg);
+                           $('#iosDialog1').fadeIn(200);
+
+                           $('#save').click(function() {
+                               $('#form').submit();
+                               $(this).parents('.js_dialog').fadeOut(200);
+                           });
+                           /*bootbox.confirm({
                                message: msg,
                                buttons: {
                                    confirm: {
@@ -174,7 +192,7 @@
                                        $('#form').submit();
                                    }
                                }
-                           });
+                           });*/
                        }
                    }
                });
