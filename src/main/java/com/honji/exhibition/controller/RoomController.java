@@ -1,10 +1,8 @@
 package com.honji.exhibition.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
 import com.honji.exhibition.entity.Room;
-import com.honji.exhibition.entity.RoomParticipant;
 import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
 import com.honji.exhibition.service.IRoomParticipantService;
@@ -105,24 +103,7 @@ public class RoomController {
     public String list(Model model) {
         UserSessionVO user = (UserSessionVO) session.getAttribute("user");
 
-        QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", user.getId());
-        List<Room> rooms = roomService.list(queryWrapper);
-        for (Room room : rooms) {
-            QueryWrapper<RoomParticipant> qw = new QueryWrapper<>();
-            qw.eq("room_id", room.getId());
-            List<RoomParticipant> roomParticipants = roomParticipantService.list(qw);
-            for (RoomParticipant roomParticipant : roomParticipants) {
-                Participant participant = participantService.getById(roomParticipant.getParticipantId());
-                System.out.println(participant);
-                //roomParticipant.setParticipant(participant);
-                room.getParticipants().add(participant);
-            }
-            //room.setParticipants(roomParticipants);
-            System.out.println(room.getParticipants());
-        }
-
-        model.addAttribute("rooms", rooms);
+        model.addAttribute("rooms", roomService.list(user.getId()));
         return "rooms";
     }
 

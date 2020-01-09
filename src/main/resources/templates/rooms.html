@@ -9,55 +9,58 @@
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="/weui/weui.min.css" />
 
 </head>
 <body>
-<div class="panel panel-info" th:each="room, state : ${rooms}">
-    <div class="panel-heading">
-        <h3 class="panel-title" th:text="房间 + ${state.index + 1} + ':' + ${room.type.desc}"></h3>
-    </div>
-    <div class="panel-body">
-        <div th:each="participant, state : ${room.participants}">
-            <span th:text="${participant.name}"></span>
-        </div>
 
-        <p></p>
-        <p>
-            <button type="button" class="btn btn-primary " th:onclick="'javascript:toEdit('+${room.id}+')' ">修改</button>
-            <button type="button" class="btn btn-danger " th:onclick="'javascript:remove('+${room.id}+')' ">
-               删除
-            </button>
-        </p>
+
+<div class="page" >
+    <div class="page__bd" >
+        <div class="weui-panel weui-panel_access" >
+            <div class="weui-panel__hd">同住信息列表</div>
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text" th:each="room, state : ${rooms}">
+                    <h4 class="weui-media-box__title" th:text="房间 + ${state.index + 1} + ':' + ${room.type.desc}">标题二</h4>
+                        <p class="weui-media-box__desc"
+                           th:text="${room.userNames}"></p>
+                    <br>
+                    <a class="weui-btn weui-btn_mini weui-btn_default" th:href="'javascript:toEdit('+${room.id}+')' " >修改</a>
+                    <a class="weui-btn weui-btn_mini weui-btn_warn" th:href="'javascript:remove('+${room.id}+')' ">删除</a>
+                </div>
+
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <div class="button-sp-area" style="text-align: center">
+        <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" id="add" onclick="toAdd()">添加同住信息</a>
+        <a class="weui-btn weui-btn_mini weui-btn_warn" href="javascript:" onclick="goBack()">返回</a>
     </div>
 </div>
-<p></p>
-    <div class="col-md-4 text-center">
-        <button type="button" class="btn btn-primary btn-lg" onclick="toAdd()">添加同住信息</button>
-        <button type="button" onclick="goBack()" class="btn btn-info btn-lg">返回</button>
-    </div>
+
 
 </body>
 <script th:inline="javascript">
 
     function goBack() {
-        $(".panel-body").modal('show');
+        $('#add').addClass('weui-btn_disabled');
         window.location.href='/user/toApply';
     }
 
     function toAdd() {
-        $(".panel-body").modal('show');
+        $('#add').addClass('weui-btn_disabled');
         window.location.href='/room/toAdd';
     }
 
     function toEdit(id) {
-        $(".panel-body").modal('show');
+
         window.location.href="/room/toEdit?id=" + id;
     }
 
 
     function remove(id) {
-
 
         bootbox.confirm({
             message: "确认删除？",

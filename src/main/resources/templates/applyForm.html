@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>订货会智能会务系统</title>
     <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/weui/weui.min.css" />
 </head>
 <body>
@@ -15,7 +12,7 @@
 
 <div class="page">
 
-    <form role="form" id="form" th:action="@{apply}" method="post" enctype="multipart/form-data">
+    <form role="form" id="form" th:action="@{apply}" method="post" >
         <input type="hidden" name="id" th:value="${session.user == null ? '' : session.user.id}"/>
         <input type="hidden" name="openId" th:value="${session.openId}"/>
 
@@ -41,8 +38,8 @@
     </form>
     <div th:if="${session.user != null}">
         <div class="weui-cells__title">已报名人员</div>
-        <div class="weui-cells" th:each="participant : ${participants}">
-            <div class="weui-cell weui-cell_example">
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_example" th:each="participant : ${participants}">
                 <div class="weui-cell__hd"></div>
                 <div class="weui-cell__bd">
                     <p th:text="${participant.name}"></p>
@@ -66,21 +63,16 @@
         <a class="weui-btn weui-btn_primary" href="javascript:"  onclick="toEditRoom()">编辑同住信息</a>
     </div>
 
-    <p></p>
-        <div>
-            <h3 class="panel-title" style="color:#FF0000">报行程截止时间：7月31日</h3>
-        </div>
+    <br>
 
-        <p></p>
-
-        <div>
-            <p>
-                温馨提醒：<br>
-                1.本次会务系统与微信绑定，请参会门店在报名、填写行程、报到过程中务必使用同一个微信号扫码，以免影响后续行程。<br>
-                2.报名如出现异常情况，麻烦联系区域商品运营专员，谢谢！
-            </p>
-        </div>
-
+    <article class="weui-article">
+        <h3 class="panel-title" style="color:#FF0000">报行程截止时间：7月31日</h3>
+        <h3>温馨提醒：</h3>
+        <section>
+            1.本次会务系统与微信绑定，请参会门店在报名、填写行程、报到过程中务必使用同一个微信号扫码，以免影响后续行程。<br>
+            2.报名如出现异常情况，麻烦联系区域商品运营专员，谢谢！
+        </section>
+    </article>
 
 </div>
 <div id="dialogs">
@@ -101,22 +93,22 @@
 <script th:inline="javascript">
 
    function edit() {
-       $(".panel-body").modal('show');
+       // $(".panel-body").modal('show');
        window.location.href='/participant/list';
    }
 
    function toEditRoom() {
-       $(".panel-body").modal('show');
+       // $(".panel-body").modal('show');
        window.location.href='/room/list';
    }
 
    function toAddSchedule() {
-       $(".panel-body").modal('show');
+       // $(".panel-body").modal('show');
        window.location.href='/schedule/toAdd';
    }
 
    function toEditSchedule(id) {
-       $(".panel-body").modal('show');
+       // $(".panel-body").modal('show');
        window.location.href="/schedule/toEdit?id=" + id;
    }
 

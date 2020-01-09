@@ -1,7 +1,10 @@
 package com.honji.exhibition.service;
 
-import com.honji.exhibition.entity.Room;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.honji.exhibition.entity.Room;
+import com.honji.exhibition.model.RoomVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRoomService extends IService<Room> {
 
+    List<RoomVO> list(Long userId);
     void add(Room room);
     void merge(Room room);
     void delete(Long id);

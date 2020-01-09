@@ -15,12 +15,10 @@
 <body>
 <div class="page" >
     <div class="page__bd" >
-
         <div class="weui-panel weui-panel_access" >
             <div class="weui-panel__hd">参与人列表</div>
-            <div class="weui-panel__bd" th:each="participant, state : ${participants}">
-
-                <div class="weui-media-box weui-media-box_text">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text" th:each="participant, state : ${participants}">
                     <h4 class="weui-media-box__title" th:text="${participant.name}">标题二</h4>
                     <p class="weui-media-box__desc" th:if="${participant.attendTraining}"
                        th:text="${participant.mobile} + '&nbsp&nbsp&nbsp&nbsp' + ${participant.sex.getDesc()
@@ -33,26 +31,21 @@
                 </div>
 
             </div>
-
         </div>
-
         <br>
     </div>
 
-        <div class="button-sp-area" style="text-align: center">
-
-            <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" onclick="toAdd()">添加人员</a>
-            <a class="weui-btn weui-btn_mini weui-btn_warn" href="javascript:" onclick="goBack()">返回</a>
-
-        </div>
+    <div class="button-sp-area" style="text-align: center">
+        <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" id="add" onclick="toAdd()">添加人员</a>
+        <a class="weui-btn weui-btn_mini weui-btn_warn" href="javascript:" onclick="goBack()">返回</a>
+    </div>
 </div>
-
 
 </body>
 <script th:inline="javascript">
 
     function goBack() {
-        $(".panel-body").modal('show');
+        $('#add').addClass('weui-btn_disabled');
         window.location.href='/user/toApply';
     }
 

@@ -7,6 +7,7 @@ import com.honji.exhibition.entity.Room;
 import com.honji.exhibition.entity.RoomParticipant;
 import com.honji.exhibition.mapper.RoomMapper;
 import com.honji.exhibition.mapper.RoomParticipantMapper;
+import com.honji.exhibition.model.RoomVO;
 import com.honji.exhibition.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements IR
 
     @Autowired
     private RoomParticipantMapper roomParticipantMapper;
+
+
+    @Override
+    public List<RoomVO> list(Long userId) {
+        return roomMapper.selectListVO(userId);
+    }
 
     @Override
     @Transactional
