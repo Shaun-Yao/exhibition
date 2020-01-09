@@ -8,30 +8,32 @@
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/webjars/bootbox.js/5.1.3/dist/bootbox.min.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/webjars/weui/1.1.2/dist/style/weui.min.css" />
+    <link rel="stylesheet" href="/weui/weui.min.css"/>
 
 </head>
 <body>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">填写行程信息</h3>
-    </div>
-    <div class="panel-body">
-        <form role="form" id="form" th:action="@{add}" method="post" enctype="multipart/form-data" >
 
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        来程信息
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <input type="hidden" name="id" th:value="${schedule == null ? '' : schedule.id}"/>
-                    <input type="hidden" name="userId" th:value="${schedule == null ? session.user.id : schedule.userId}"/>
+<form role="form" id="form" th:action="@{save}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" th:value="${schedule == null ? '' : schedule.id}"/>
+    <input type="hidden" name="userId" th:value="${schedule == null ? session.user.id : schedule.userId}"/>
+    <input type="hidden" name="picture1" id="picture1" th:value="${schedule == null ? '' : schedule.picture1}">
+    <input type="hidden" name="picture2" id="picture2" th:value="${schedule == null ? '' : schedule.picture2}">
 
-                    <div class="form-group">
-                        <label for="arrivedTravelMode">出行方式</label>
-                        <select name="arrivedTravelMode" id="arrivedTravelMode" class="form-control" required>
+    <div class="page">
+
+        <div class="weui-form__text-area">
+            <h2 class="weui-form__title">填写行程信息</h2>
+        </div>
+        <div class="weui-form__control-area">
+            <div class="weui-cells__group weui-cells__group_form">
+                <div class="weui-cells__title">来程信息</div>
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label for="arrivedTravelMode" class="weui-label">出行方式</label>
+                    </div>
+                    <div class="weui-cell__bd">
+
+                        <select name="arrivedTravelMode" id="arrivedTravelMode" class="weui-select" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.TravelModeEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -39,23 +41,29 @@
                             </option>
                         </select>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="arrivedNum" class="control-label">航班/班次</label>
-                        <input type="text" class="form-control" name="arrivedNum" id="arrivedNum" minlength="2" maxlength="6"
-                               th:value="${schedule == null ? '' : schedule.arrivedNum}" required />
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label" for="arrivedNum">航班/班次</label></div>
+                    <div class="weui-cell__bd">
+                        <input type="text" class="weui-input" name="arrivedNum" id="arrivedNum" minlength="2" maxlength="6"
+                               placeholder="输入来程航班/班次" th:value="${schedule == null ? '' : schedule.arrivedNum}" required />
                     </div>
-
-                    <div class="form-group">
-                        <label for="arrivedTime" class="control-label">到达时间</label>
-                        <input type="datetime-local" class="form-control" name="arrivedTime" id="arrivedTime" required="required"
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label" for="arrivedTime">到达时间</label></div>
+                    <div class="weui-cell__bd">
+                        <input type="datetime-local" class="" name="arrivedTime" id="arrivedTime" required="required"
                                th:min="${scheduleTimeConfig.arriveStartTime}" th:max="${scheduleTimeConfig.arriveEndTime}"
                                th:value="${schedule == null ? scheduleTimeConfig.arriveStartTime : schedule.arrivedTime}" />
                     </div>
-
-                    <div class="form-group">
-                        <label for="arrivedPickUpStation">接送站点</label>
-                        <select class="form-control" name="arrivedPickUpStation" id="arrivedPickUpStation" required>
+                </div>
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label" for="arrivedPickUpStation">接送站点</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="arrivedPickUpStation" id="arrivedPickUpStation" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.StationEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -64,21 +72,17 @@
                         </select>
                     </div>
                 </div>
-
             </div>
 
+            <div class="weui-cells__group weui-cells__group_form">
+                <div class="weui-cells__title">返程信息</div>
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label for="leavedTravelMode" class="weui-label">出行方式</label>
+                    </div>
+                    <div class="weui-cell__bd">
 
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        返程信息
-                    </h3>
-                </div>
-                <div class="panel-body">
-
-                    <div class="form-group">
-                        <label for="arrivedTravelMode">出行方式</label>
-                        <select name="leavedTravelMode" id="leavedTravelMode" class="form-control" required>
+                        <select name="leavedTravelMode" id="leavedTravelMode" class="weui-select" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.TravelModeEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -86,23 +90,29 @@
                             </option>
                         </select>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="leavedNum" class="control-label">航班/班次</label>
-                        <input type="text" class="form-control" name="leavedNum" id="leavedNum" minlength="2" maxlength="6"
-                               th:value="${schedule == null ? '' : schedule.leavedNum}" required/>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label" for="leavedNum">航班/班次</label></div>
+                    <div class="weui-cell__bd">
+                        <input type="text" class="weui-input" name="leavedNum" id="leavedNum" minlength="2" maxlength="6"
+                               placeholder="输入返程航班/班次" th:value="${schedule == null ? '' : schedule.arrivedNum}" required />
                     </div>
-
-                    <div class="form-group">
-                        <label for="leavedTime" class="control-label">返程时间</label>
-                        <input type="datetime-local" class="form-control" name="leavedTime" id="leavedTime" required="required"
-                               th:min="${scheduleTimeConfig.arriveStartTime}" th:max="${scheduleTimeConfig.arriveEndTime}"
-                               th:value="${schedule == null ? scheduleTimeConfig.arriveStartTime : schedule.leavedTime}" />
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label" for="leavedTime">返程时间</label></div>
+                    <div class="weui-cell__bd">
+                        <input type="datetime-local" class="" name="leavedTime" id="leavedTime" required="required"
+                               th:min="${scheduleTimeConfig.leaveStartTime}" th:max="${scheduleTimeConfig.leaveEndTime}"
+                               th:value="${schedule == null ? scheduleTimeConfig.leaveStartTime : schedule.leavedTime}" />
                     </div>
-
-                    <div class="form-group">
-                        <label for="leavedPickUpLocation">返程出发地</label>
-                        <select class="form-control" name="leavedPickUpLocation" id="leavedPickUpLocation" required>
+                </div>
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label" for="leavedPickUpLocation">返程出发地</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="leavedPickUpLocation" id="leavedPickUpLocation" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.LeavePickUpLocationEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -110,11 +120,13 @@
                             </option>
                         </select>
                     </div>
-
-
-                    <div class="form-group">
-                        <label for="leavedStation">返程站点</label>
-                        <select class="form-control" name="leavedStation" id="leavedStation" required>
+                </div>
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label" for="leavedStation">返程站点</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="leavedStation" id="leavedStation" required>
                             <option></option>
                             <option th:each="type : ${T(com.honji.exhibition.enums.LeaveStationEnum).values()}"
                                     th:value="${type}" th:text="${type.desc}"
@@ -124,9 +136,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--<input id="input-id" type="file" name="file" data-preview-file-type="text" data-msg-placeholder="上传来程班次图片" >
--->
 
             <div class="page__bd">
                 <div class="weui-gallery" id="gallery">
@@ -159,19 +168,22 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <input type="hidden" name="picture1" id="picture1" th:value="${schedule == null ? '' : schedule.picture1}">
-            <input type="hidden" name="picture2" id="picture2" th:value="${schedule == null ? '' : schedule.picture2}">
 
-            <div class="col-md-4 text-center">
-                <button type="button" class="btn btn-primary btn-lg" id="submitBtn">保存</button>
-                <button type="button" onclick="goBack()" class="btn btn-info btn-lg">取消</button>
+        <div class="weui-form__opr-area">
+            <div class="button-sp-area" style="text-align: center">
+
+                <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" id="submitBtn">确定提交</a>
+                <a class="weui-btn weui-btn_mini weui-btn_warn" href="javascript:" onclick="goBack()">返回</a>
+
             </div>
+        </div>
 
-        </form>
     </div>
+</form>
 
-</div>
+
 <!--BEGIN toast-->
 <div id="toast" style="display: none;">
     <div class="weui-mask_transparent"></div>
@@ -186,6 +198,8 @@
 
     var fileArr=new Array();
     var pictureSize = 0;
+
+
 
     $(function(){
         var $toast = $('#toast');

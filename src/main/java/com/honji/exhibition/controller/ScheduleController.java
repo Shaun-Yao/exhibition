@@ -94,8 +94,8 @@ public class ScheduleController {
     }
 
     //@ResponseBody
-    @PostMapping("/add")
-    public String add(@ModelAttribute Schedule schedule) {
+    @PostMapping("/save")
+    public String save(@ModelAttribute Schedule schedule) {
 
         //Long userId = schedule.getUserId();
         String arrivedNum = schedule.getArrivedNum();

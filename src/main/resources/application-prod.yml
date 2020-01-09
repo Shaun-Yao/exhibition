@@ -1,11 +1,6 @@
 server:
   port: 80
-  servlet:
-    multipart:
-      max-file-size: 3MB
-      max-request-size: 10MB
-    session:
-      timeout: 1h
+
 
 web:
   upload-path: D:/浪漫订货会/upload/
@@ -21,6 +16,12 @@ spring:
   thymeleaf:
     cache: false
     mode: HTML
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+  session:
+    timeout: 1h
 
 mybatis:
   type-aliases-package: com.honji.exhibition

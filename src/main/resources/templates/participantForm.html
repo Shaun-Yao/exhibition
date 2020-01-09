@@ -11,7 +11,7 @@
 </head>
 <body>
 <form role="form" id="form" th:action="@{save}" method="post">
-
+    <input type="hidden" name="id" id="id" th:value="${participant == null ? '' : participant.id}"/>
     <div class="page">
 
             <div class="weui-form__text-area">
@@ -71,7 +71,7 @@
         <div class="weui-form__opr-area">
             <div class="button-sp-area" style="text-align: center">
 
-                <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" id="submitBtn">确定添加</a>
+                <a class="weui-btn weui-btn_mini weui-btn_primary" href="javascript:" id="submitBtn">确定提交</a>
                 <a class="weui-btn weui-btn_mini weui-btn_warn" href="javascript:" onclick="goBack()">返回</a>
 
             </div>
