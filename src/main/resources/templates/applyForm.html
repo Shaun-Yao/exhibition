@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>订货会智能会务系统</title>
     <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/weui/weui.min.js"></script>
     <link rel="stylesheet" href="/weui/weui.min.css" />
 </head>
 <body>
@@ -75,20 +76,8 @@
     </article>
 
 </div>
-<div id="dialogs">
-<!--BEGIN dialog1-->
-<div class="js_dialog" id="iosDialog1" style="display: none;">
-    <div class="weui-mask"></div>
-    <div class="weui-dialog">
-        <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
-        <div class="weui-dialog__ft">
-            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
-            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" id="save">确认报名</a>
-        </div>
-    </div>
-</div>
-</div>
-<!--END dialog1-->
+
+
 </body>
 <script th:inline="javascript">
 
@@ -115,6 +104,18 @@
 
 
    $(function(){
+
+
+       /* confirm */
+       /*document.querySelector('#confirmBtn').addEventListener('click', function () {
+           weui.confirm('自定义标题的confirm', function () {
+               console.log('yes')
+           }, function () {
+               console.log('no')
+           }, {
+               title: '自定义标题'
+           });
+       });*/
 
        $('#dialogs').on('click', '.weui-dialog__btn_default', function(){
            $(this).parents('.js_dialog').fadeOut(200);
@@ -159,13 +160,26 @@
                                }
                            });
 
-                           $('.weui-dialog__bd').text(msg);
+                           weui.confirm(msg, function () {
+                               $('#submitBtn').addClass('weui-btn_disabled');
+                               $('#form').submit();
+                           }, function () {
+                               //console.log('no')
+                           }, {
+                               title: '确认报名'
+                           });
+                           /*if(confirm(msg)==true){
+                               $('#submitBtn').addClass('weui-btn_disabled');
+                               $('#form').submit();
+                           }*/
+
+                           /*$('.weui-dialog__bd').text(msg);
                            $('#iosDialog1').fadeIn(200);
 
                            $('#save').click(function() {
                                $('#form').submit();
                                $(this).parents('.js_dialog').fadeOut(200);
-                           });
+                           });*/
                            /*bootbox.confirm({
                                message: msg,
                                buttons: {
