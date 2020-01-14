@@ -24,7 +24,7 @@
             </div>
             <div class="weui-form__control-area">
                 <div class="weui-cells__group weui-cells__group_form">
-                    <div class="weui-cells__title">来程信息</div>
+                    <div class="weui-cells__title"><h2>来程信息</h2></div>
                     <div class="weui-cell weui-cell_select weui-cell_select-after">
                         <div class="weui-cell__hd">
                             <label for="arrivedTravelMode" class="weui-label">出行方式</label>
@@ -51,10 +51,11 @@
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label class="weui-label" for="arrivedTime">到达时间</label></div>
                         <div class="weui-cell__bd">
-                            <input type="datetime-local" class="" name="arrivedTime" id="arrivedTime" required="required"
+                            <input type="datetime-local" class="weui-input" name="arrivedTime" id="arrivedTime" required="required"
                                    th:min="${scheduleTimeConfig.arriveStartTime}" th:max="${scheduleTimeConfig.arriveEndTime}"
                                    th:value="${schedule == null ? scheduleTimeConfig.arriveStartTime : schedule.arrivedTime}" />
                         </div>
+                        <div class="weui-cell__ft"></div>
                     </div>
                     <div class="weui-cell weui-cell_select weui-cell_select-after">
                         <div class="weui-cell__hd">
@@ -73,7 +74,7 @@
                 </div>
 
                 <div class="weui-cells__group weui-cells__group_form">
-                    <div class="weui-cells__title">返程信息</div>
+                    <div class="weui-cells__title"><h2>返程信息</h2></div>
                     <div class="weui-cell weui-cell_select weui-cell_select-after">
                         <div class="weui-cell__hd">
                             <label for="leavedTravelMode" class="weui-label">出行方式</label>
@@ -100,7 +101,7 @@
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label class="weui-label" for="leavedTime">返程时间</label></div>
                         <div class="weui-cell__bd">
-                            <input type="datetime-local" class="" name="leavedTime" id="leavedTime" required="required"
+                            <input type="datetime-local" class="weui-input" name="leavedTime" id="leavedTime" required="required"
                                    th:min="${scheduleTimeConfig.leaveStartTime}" th:max="${scheduleTimeConfig.leaveEndTime}"
                                    th:value="${schedule == null ? scheduleTimeConfig.leaveStartTime : schedule.leavedTime}" />
                         </div>
