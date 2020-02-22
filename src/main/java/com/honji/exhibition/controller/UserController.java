@@ -54,7 +54,7 @@ public class UserController {
         if (prefix == null) {
             prefix = user.getShopType();
         }
-        model.addAttribute("prefix", prefix);
+        //model.addAttribute("prefix", prefix);
 
         //User user = null;
         QueryWrapper<SignUpSwitch> susQueryWrapper = new QueryWrapper();
@@ -62,11 +62,11 @@ public class UserController {
         SignUpSwitch signUpSwitch = signUpSwitchService.getOne(susQueryWrapper);
 
 
-        if (session.getAttribute("prefix") == null) {
-            session.setAttribute("prefix", prefix);
-        }
+//        if (session.getAttribute("prefix") == null) {
+//            session.setAttribute("prefix", prefix);
+//        }
 
-        //model.addAttribute("prefix", prefix);
+        model.addAttribute("prefix", prefix);
         model.addAttribute("onOff", signUpSwitch.isOnOff());
 
 /*

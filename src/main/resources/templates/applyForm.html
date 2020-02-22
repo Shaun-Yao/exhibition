@@ -28,7 +28,7 @@
         <div class="weui-cell__bd">
             <input  class="weui-input" placeholder="输入店铺代码"
                     name="shopCode" id="shopCode" required="required"
-                    th:value="${session.user == null ? session.prefix : session.user.shopCode}"/>
+                    th:value="${session.user == null ? prefix : session.user.shopCode}"/>
         </div>
     </div>
 
