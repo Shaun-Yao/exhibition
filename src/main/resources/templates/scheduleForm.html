@@ -203,7 +203,8 @@
         var $toast = $('#toast');
 
         if ([[${schedule}]] == null) {//新增行程默认返程出发地为“公司”
-            $('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
+            //$('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
+            $('#leavedPickUpLocation option[value=HOTEL]')[0].selected=true;
         }
         var tmpl = '<li class="weui-uploader__file" file-name="" style="background-image:url(#url#)"></li>',
             $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
@@ -303,6 +304,7 @@
             pictureSize = pictureSize - 1;
             checkPhotoSize();
         });
+/*
 
         $('#leavedTime').change(function () {
 
@@ -312,6 +314,7 @@
                 $('#leavedPickUpLocation option[value=COMPANY]')[0].selected=true;
             }
         });
+*/
 
         $('#arrivedTravelMode').change(function () {
             switch (this.value) {

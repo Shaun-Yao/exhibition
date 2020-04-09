@@ -51,12 +51,14 @@
         <a class="weui-btn weui-btn_primary" href="javascript:" onclick="edit()" >编辑人员信息</a>
     </div>
 
+
     <div th:if="${session.user != null}">
         <div class="weui-cells__title">行程信息（必填，请准确填报，以便智能接送）</div>
         <a class="weui-btn weui-btn_primary" href="javascript:" th:if="${schedule == null}" onclick="toAddSchedule()">填写行程信息</a>
         <a class="weui-btn weui-btn_primary" href="javascript:" th:if="${schedule != null}"
            th:onclick="'javascript:toEditSchedule('+${schedule.id}+')' ">填写行程信息</a>
     </div>
+
 
     <div th:if="${schedule != null}">
 
@@ -67,7 +69,7 @@
     <br>
 
     <article class="weui-article">
-        <h3 class="panel-title" style="color:#FF0000">报行程截止时间：7月31日</h3>
+        <h3 class="panel-title" style="color:#FF0000">报行程截止时间：4月10日</h3>
         <h3>温馨提醒：</h3>
         <section>
             1.本次会务系统与微信绑定，请参会门店在报名、填写行程、报到过程中务必使用同一个微信号扫码，以免影响后续行程。<br>

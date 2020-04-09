@@ -34,14 +34,14 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
                              HttpServletResponse response, Object handler) throws IOException {
 
         //微信业务域名验证直接通过
-        if("/MP_verify_yROjuqyGsEFtPr0M.txt".equals(request.getRequestURI())) {
+        if("/MP_verify_9dQkDF12uPmh1y78.txt".equals(request.getRequestURI())) {
             return true;
         }
 
         HttpSession session = request.getSession();
         String code = request.getParameter("code");
         UserSessionVO user = (UserSessionVO) session.getAttribute("user");
-        Object wxOpenId = session.getAttribute("openId");
+        //Object wxOpenId = session.getAttribute("openId");
 
         //if (user != null || wxOpenId != null) {
         if (user != null) {
@@ -68,6 +68,7 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
             }
 
             String authUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+            //log.info(authUrl);
             response.sendRedirect(authUrl);
             //return false;
         } else { //回调带有code参数需要校验
@@ -75,6 +76,7 @@ public class SessionTimeoutInterceptor extends HandlerInterceptorAdapter {
                 WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
                 WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
                 final String openId = wxMpUser.getOpenId();
+                //log.info(openId);
                 //QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 //queryWrapper.eq("open_id", openId);
                 //User user = userService.getOne(queryWrapper);

@@ -1,5 +1,9 @@
 server:
   port: 80
+#  ssl:
+#    key-store: classpath:3719568_huiwu.romsp.com.pfx
+#    key-store-password: B9C28WQe
+#    key-store-type: PFX
 
 
 web:
@@ -41,10 +45,10 @@ mapper:
 
 wx:
   mp:
-    appId: wxcd0e02c4283de35e
-    secret: b43b3add5005cdbb0d857bd9b2aca743
-    token: wff896uy53fr54l12xd954fgkl2qsa56
-    aesKey: TrggU0NiO105hc7bK7DGZVF7CACo5vyu4YPb6FCB0A9
+    appId: wx5c381fc8c2e03d79
+    secret: 4829f8cf6a078933d1c62395afd49611
+    token: qazwsxcft1784
+    aesKey: dreNcC9EQQUexsAt4PlzTbZa82GJWWGmjo9CySTpBG3
 logging:
 
   file: logs/exhibition.log
