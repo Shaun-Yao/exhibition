@@ -24,8 +24,7 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 10MB
-  session:
-    timeout: 1h
+
 
 mybatis:
   type-aliases-package: com.honji.exhibition
@@ -45,10 +44,10 @@ mapper:
 
 wx:
   mp:
-    appId: wx5c381fc8c2e03d79
-    secret: 4829f8cf6a078933d1c62395afd49611
-    token: qazwsxcft1784
-    aesKey: dreNcC9EQQUexsAt4PlzTbZa82GJWWGmjo9CySTpBG3
+    appId: test
+    secret: test
+    token:
+    aesKey:
 logging:
 
   file: logs/exhibition.log
