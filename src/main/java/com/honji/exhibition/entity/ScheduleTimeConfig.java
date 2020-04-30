@@ -36,5 +36,10 @@ public class ScheduleTimeConfig extends IdEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime leaveEndTime;
 
+    /**
+     * 截止日期说明
+     */
+    private String deadline;
+
 
 }

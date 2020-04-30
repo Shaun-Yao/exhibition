@@ -5,7 +5,6 @@ import com.honji.exhibition.entity.*;
 import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.*;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,9 +20,6 @@ import java.util.List;
 public class UserController {
 
 
-    @Autowired
-    private WxMpService wxMpService;
-
 
     @Autowired
     private IUserService userService;
@@ -38,7 +34,7 @@ public class UserController {
     private IScheduleService scheduleService;
 
     @Autowired
-    private IRoomService roomService;
+    private IScheduleTimeConfigService scheduleTimeConfigService;
 
     @Autowired
     private HttpSession session;
@@ -61,6 +57,10 @@ public class UserController {
         susQueryWrapper.eq("shop_type", prefix);
         SignUpSwitch signUpSwitch = signUpSwitchService.getOne(susQueryWrapper);
 
+        QueryWrapper<ScheduleTimeConfig> stQueryWrapper = new QueryWrapper();
+        stQueryWrapper.eq("shop_type", prefix);
+        ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(stQueryWrapper);
+
 
 //        if (session.getAttribute("prefix") == null) {
 //            session.setAttribute("prefix", prefix);
@@ -68,6 +68,7 @@ public class UserController {
 
         model.addAttribute("prefix", prefix);
         model.addAttribute("onOff", signUpSwitch.isOnOff());
+        model.addAttribute("deadline", scheduleTimeConfig.getDeadline());
 
 /*
 
