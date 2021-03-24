@@ -31,6 +31,14 @@ public class Participant extends BaseEntity {
     //@EnumValue
     private SexEnum sex;
 
+    /**
+     * 是否参加培训
+     */
     private boolean attendTraining;
+
+    /**
+     * 是否参加温泉
+     */
+    private boolean attendHotSpring;
 
 }

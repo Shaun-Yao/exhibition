@@ -41,5 +41,14 @@ public class ScheduleTimeConfig extends IdEntity {
      */
     private String deadline;
 
+    /**
+     * 是否参与培训勾选框说明
+     */
+    private String trainingDesc;
+
+    /**
+     * 是否参与温泉勾选框说明
+     */
+    private String hotSpringDesc;
 
 }

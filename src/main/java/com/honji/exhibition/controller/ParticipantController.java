@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.honji.exhibition.entity.Participant;
 import com.honji.exhibition.entity.RoomParticipant;
 import com.honji.exhibition.entity.Schedule;
+import com.honji.exhibition.entity.ScheduleTimeConfig;
 import com.honji.exhibition.model.UserSessionVO;
 import com.honji.exhibition.service.IParticipantService;
 import com.honji.exhibition.service.IRoomParticipantService;
 import com.honji.exhibition.service.IScheduleService;
+import com.honji.exhibition.service.IScheduleTimeConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +41,9 @@ public class ParticipantController {
     private IRoomParticipantService roomParticipantService;
 
     @Autowired
+    private IScheduleTimeConfigService scheduleTimeConfigService;
+
+    @Autowired
     private HttpSession session;
 
     @GetMapping("/list")
@@ -57,12 +62,22 @@ public class ParticipantController {
     }
 
     @GetMapping("/toAdd")
-    public String toAdd() {
+    public String toAdd(Model model) {
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("shop_type", user.getShopType());
+        ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(queryWrapper);
+        model.addAttribute("timeConfig", scheduleTimeConfig);
         return "participantForm";
     }
 
     @GetMapping("/toEdit")
     public String toEdit(@RequestParam Long id, Model model) {
+        UserSessionVO user = (UserSessionVO) session.getAttribute("user");
+        QueryWrapper<ScheduleTimeConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("shop_type", user.getShopType());
+        ScheduleTimeConfig scheduleTimeConfig = scheduleTimeConfigService.getOne(queryWrapper);
+        model.addAttribute("timeConfig", scheduleTimeConfig);
         Participant participant = participantService.getById(id);
         model.addAttribute("participant", participant);
         return "participantForm";

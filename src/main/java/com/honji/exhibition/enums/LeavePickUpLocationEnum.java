@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum LeavePickUpLocationEnum {
 
     NONE(0, "无需接送"),
-    HOTEL(1, "酒店出发");
-    //COMPANY(2, "公司出发");
+    HOTEL(1, "酒店出发"),
+    COMPANY(2, "公司出发");
 
     LeavePickUpLocationEnum(int code, String desc) {
         this.code = code;
