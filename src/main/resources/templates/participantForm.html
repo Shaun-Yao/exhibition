@@ -55,13 +55,22 @@
                             </div>
                         </div>
 
-
                         <div class="weui-cells weui-cells_form">
                             <div class="weui-cell weui-cell_switch">
-                                <div class="weui-cell__bd">本人是否参加7-9号培训</div>
+                                <div class="weui-cell__bd"><span th:text="${timeConfig.trainingDesc}">本人是否参加13-14号培训</span></div>
                                 <div class="weui-cell__ft">
                                     <input class="weui-switch" name="attendTraining" type="checkbox"
                                            th:checked="${participant != null && participant.attendTraining}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-cells weui-cells_form">
+                            <div class="weui-cell weui-cell_switch">
+                                <div class="weui-cell__bd"><span th:text="${timeConfig.hotSpringDesc}">本人是否参加温泉项目</span></div>
+                                <div class="weui-cell__ft">
+                                    <input class="weui-switch" name="attendHotSpring" type="checkbox"
+                                           th:checked="${participant != null && participant.attendHotSpring}"/>
                                 </div>
                             </div>
                         </div>

@@ -124,7 +124,7 @@
        });
 
        if(![[${onOff}]]) {//如果后台设置关闭报名则禁用所有按钮
-           $(".weui-btn").each(function () {
+           $(":button").each(function () {
                $(this).attr('disabled',true);
            });
            //$('#submitBtn').attr('disabled',true);

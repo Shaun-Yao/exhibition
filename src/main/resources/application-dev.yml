@@ -1,11 +1,11 @@
 server:
-  port: 8000
+  port: 8822
 
 web:
   upload-path: E:/exhibition/
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/exhibition-test?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/exhibition?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -37,8 +37,8 @@ mapper:
 
 wx:
   mp:
-    appId: wx2403fce351d2e3d8
-    secret: f2dca5ef6d95b67e917790952087141d
+    appId: wx85026c3b4d60d28d
+    secret: aa9d98fe21d17bf9246a4c4c5892c012
     token:
     aesKey:
 logging:
