@@ -31,22 +31,50 @@ public interface ParticipantMapper extends BaseMapper<Participant> {
      * @param userId
      * @return
      */
-    @Select("SELECT * FROM participant WHERE user_id = #{userId}" +
-                " and id in (SELECT participant_id FROM room_participant)")
+    @Select({"SELECT pp.* FROM participant pp",
+            " JOIN room_participant rp on pp.id = rp.participant_id",
+            "  WHERE pp.user_id = #{userId}",
+    })
     List<Participant> selectUnAvailable(Long userId);
 
-    @Select("SELECT * FROM participant WHERE user_id IN (SELECT id FROM `user` " +
-            " WHERE shop_id IN ( SELECT id FROM shop WHERE area IN ( SELECT area FROM shop WHERE id = ( SELECT shop_id FROM `user` WHERE id = #{userId} ) ) ))" +
-            " AND id not in (SELECT participant_id FROM room_participant)")
+    /**
+     * 查找同一个大区，来返日期相同还未分配房间的参与人
+     * @param userId
+     * @return
+     */
+    @Select({"SELECT pp.* FROM participant pp",
+            " JOIN user on pp.user_id = user.id",
+            " JOIN shop on user.shop_id = shop.id",
+            " JOIN `schedule` sc on user.id = sc.user_id",
+            " WHERE shop.area = ",
+            " (SELECT area FROM `user` JOIN shop on user.shop_id = shop.id WHERE user.id = #{userId})",
+            " and DATE_FORMAT(sc.arrived_time,'%Y-%m-%d') = ",
+            " (SELECT DATE_FORMAT(arrived_time,'%Y-%m-%d') FROM `schedule` WHERE user_id = #{userId})",
+            " and DATE_FORMAT(sc.leaved_time,'%Y-%m-%d') = ",
+            " (SELECT DATE_FORMAT(leaved_time,'%Y-%m-%d') FROM `schedule` WHERE user_id = #{userId})",
+            " AND pp.id not in (SELECT participant_id FROM room_participant)"
+    })
     List<Participant> selectByArea(Long userId);
 
-    @Select("SELECT *  FROM participant WHERE user_id IN (SELECT id FROM `user` " +
-            " WHERE shop_id IN ( SELECT id FROM shop WHERE area IN ( SELECT area FROM shop WHERE id = ( SELECT shop_id FROM `user` WHERE id = #{userId} ) ) ))" +
-            " AND sex = 3" +
-            " AND id not in (SELECT participant_id FROM room_participant)")
+
+    /**
+     * 查找同一个大区，来返日期相同还未分配房间的参与人
+     * @param userId
+     * @return
+     */
+    @Select({"SELECT pp.* FROM participant pp",
+            " JOIN user on pp.user_id = user.id",
+            " JOIN shop on user.shop_id = shop.id",
+            " WHERE sex = 3",
+            " and area = ",
+            " (SELECT area FROM `user` JOIN shop on user.shop_id = shop.id WHERE user.id = #{userId})",
+            " AND pp.id not in (SELECT participant_id FROM room_participant)"
+    })
     List<Participant> selectChildren(Long userId);
 
-    @Select("SELECT * FROM participant WHERE id in " +
-            "(SELECT participant_id FROM room_participant WHERE room_id = #{roomId} ORDER BY id)")
+    @Select({"SELECT pp.* FROM participant pp",
+            " JOIN room_participant rp on pp.id = rp.participant_id",
+            "  WHERE rp.room_id = #{roomId}",
+    })
     List<Participant> selectByRoom(Long roomId);
 }

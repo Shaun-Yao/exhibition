@@ -124,6 +124,7 @@
        });
 
        if(![[${onOff}]]) {//如果后台设置关闭报名则禁用所有按钮
+           console.log("disable button..");
            $(".weui-btn").each(function () {
                // $(this).attr('disabled',true);
                $(this).hide();
